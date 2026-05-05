@@ -14,3 +14,18 @@ skills:
   #     - review
   #     - coding
   #   last_reviewed_at: 2026-05-05
+  - name: knowledge-management
+    path: skills/knowledge-management
+    status: active
+    owner: self
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: original
+    tags:
+      - knowledge
+      - memory
+      - nmem
+    last_reviewed_at: 2026-05-05
