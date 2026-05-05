@@ -1,0 +1,16 @@
+skills:
+  # Example:
+  # - name: nsc-review
+  #   path: skills/nsc-review
+  #   status: active
+  #   owner: self
+  #   publish:
+  #     agents: true
+  #     claude: true
+  #     cursor: false
+  #   source:
+  #     type: original
+  #   tags:
+  #     - review
+  #     - coding
+  #   last_reviewed_at: 2026-05-05
