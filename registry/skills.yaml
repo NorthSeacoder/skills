@@ -1,7 +1,7 @@
 skills:
   # Example:
-  # - name: nsc-review
-  #   path: skills/nsc-review
+  # - name: review
+  #   path: skills/review
   #   status: active
   #   owner: self
   #   publish:
