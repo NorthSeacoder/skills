@@ -41,9 +41,12 @@
 - workflow / CI 改动是否合理
 - 构建、lint、typecheck 是否受影响
 - 环境变量、权限、缓存策略是否安全
+- GitHub Actions 触发条件、permissions、matrix、concurrency 是否合理
+- 生成产物或版本文件是否需要同步更新
 
 ## 8. 发布影响
 
 - 是否需要迁移或版本说明
 - 是否需要更新 changelog / docs
 - 是否适合直接合并或发布
+- release 脚本、tag、artifact、publish 配置是否一致
