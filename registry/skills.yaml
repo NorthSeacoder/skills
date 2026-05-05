@@ -19,8 +19,8 @@ skills:
     status: active
     owner: self
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: original
@@ -35,8 +35,8 @@ skills:
     status: active
     owner: adopted
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: adopted
@@ -51,8 +51,8 @@ skills:
     status: active
     owner: adopted
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: adopted
@@ -67,8 +67,8 @@ skills:
     status: active
     owner: adopted
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: adopted
@@ -83,8 +83,8 @@ skills:
     status: active
     owner: adopted
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: adopted
@@ -99,8 +99,8 @@ skills:
     status: active
     owner: adopted
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: adopted
@@ -115,8 +115,8 @@ skills:
     status: active
     owner: self
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: original
@@ -131,8 +131,8 @@ skills:
     status: active
     owner: self
     publish:
-      agents: false
-      claude: false
+      agents: true
+      claude: true
       cursor: false
     source:
       type: original
