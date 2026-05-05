@@ -7,12 +7,14 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
       - name: Install PyYAML
         run: pip install pyyaml
       - name: Verify skills
-        run: ./scripts/verify-skills.sh
+        run: bash ./scripts/verify-skills.sh

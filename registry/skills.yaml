@@ -29,3 +29,115 @@ skills:
       - memory
       - nmem
     last_reviewed_at: 2026-05-05
+
+  - name: specify
+    path: skills/specify
+    status: active
+    owner: adopted
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: adopted
+    tags:
+      - sdd
+      - specification
+      - planning
+    last_reviewed_at: 2026-05-05
+
+  - name: clarify
+    path: skills/clarify
+    status: active
+    owner: adopted
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: adopted
+    tags:
+      - sdd
+      - clarification
+      - requirements
+    last_reviewed_at: 2026-05-05
+
+  - name: plan
+    path: skills/plan
+    status: active
+    owner: adopted
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: adopted
+    tags:
+      - sdd
+      - architecture
+      - implementation-plan
+    last_reviewed_at: 2026-05-05
+
+  - name: tasks
+    path: skills/tasks
+    status: active
+    owner: adopted
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: adopted
+    tags:
+      - sdd
+      - task-breakdown
+      - execution
+    last_reviewed_at: 2026-05-05
+
+  - name: implement
+    path: skills/implement
+    status: active
+    owner: adopted
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: adopted
+    tags:
+      - sdd
+      - implementation
+      - coding
+    last_reviewed_at: 2026-05-05
+
+  - name: execute-plan
+    path: skills/execute-plan
+    status: active
+    owner: self
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: original
+    tags:
+      - sdd
+      - orchestration
+      - execution
+    last_reviewed_at: 2026-05-05
+
+  - name: code-review
+    path: skills/code-review
+    status: active
+    owner: self
+    publish:
+      agents: false
+      claude: false
+      cursor: false
+    source:
+      type: original
+    tags:
+      - review
+      - quality
+      - testing
+    last_reviewed_at: 2026-05-05
