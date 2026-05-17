@@ -25,24 +25,18 @@
 
 **状态转换** (如适用):
 
-```
+```text
 INIT(0) → PROCESSING(1) → SUCCESS(2)
                        ↘ FAILED(3)
 ```
 
 ---
 
-### [实体名2]
-
-[同上格式]
-
----
-
 ## Relationships
 
-```
-[实体A] 1:N [实体B]  (通过 a_id 关联)
-[实体B] N:1 [实体C]  (通过 c_id 关联)
+```text
+[实体A] 1:N [实体B]
+[实体B] N:1 [实体C]
 ```
 
 ---
@@ -58,9 +52,7 @@ CREATE TABLE `t_xxx` (
     `status` INT NOT NULL DEFAULT 0,
     `created_at` DATETIME NOT NULL,
     `updated_at` DATETIME NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `idx_xxx_id` (`xxx_id`),
-    INDEX `idx_created_at` (`created_at`)
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 

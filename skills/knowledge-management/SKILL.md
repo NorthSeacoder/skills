@@ -52,7 +52,18 @@ description: 使用 nmem CLI 管理个人知识库。支持总结对话、扫描
 
 ## 核心工作流
 
-## Space 选择规则
+### 前置检查
+
+执行**任何写操作**（`m add`、`m update`、`m move`）前，先检查服务健康：
+
+```bash
+curl -s http://127.0.0.1:14242/health | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'status: {d[\"status\"]}, db: {d[\"database_connected\"]}')"
+```
+
+- `status: ok, db: True` → 继续
+- `status: degraded, db: False` → 先重启服务（见 Troubleshooting），再重试
+
+### Space 选择规则
 
 - 若当前项目已有明确的 `nmem space` 约定，搜索、去重、写入、更新、迁移时都优先使用该 `space`，不要默认写到 `Default`。
 - 若项目内 skill、`AGENTS.md`、仓库文档或现有记忆已明确指定项目级 memory lane，应先遵守该约定。
@@ -69,7 +80,7 @@ description: 使用 nmem CLI 管理个人知识库。支持总结对话、扫描
 - 当记忆已误写入 `Default`，且后续确认项目应有独立 `space` 时，应补做迁移，而不是继续在 `Default` 追加同类记忆。
 - 若用户已经形成稳定的个人级空间划分，应优先复用，不要每次重新发明命名。当前已确认可复用的个人级空间范式：
   - `fintopia`：瓴岳科技、OA、SlimFit、`@yqg/*`、公司工程事实。
-  - `selfmedia`：公众号选题、小说、内容创作系统。
+  - `selfmedia`：公众号选题、小说、内容创作系统。小说类内容统一归 `selfmedia`，不要再单独视作未归类创作记忆；凡是带 `novel` label 的记忆，也默认归入 `selfmedia`。
   - `tools`：Hermes、Cursor/Claude/Codex、skills、nmem、工具链。
   - `career`：简历、职业定位、对外表述。
 - 若主题明显属于上述四类之一，应直接建议或使用对应 `space`，不要继续混写到 `Default`。
@@ -90,9 +101,9 @@ nmem m search "关键词"
 
 当用户请求总结时，采用**多维度批量处理**流程：
 
-#### 第 1 步：多维度知识提取
+#### 第 1 步：多维度知识提取 + Space 判断
 
-从对话中识别并拆分多个独立的知识点：
+从对话中识别并拆分多个独立的知识点，**同时确定每条知识的 space**：
 
 ```
 拆分维度参考：
@@ -104,6 +115,10 @@ nmem m search "关键词"
 - 每个知识点应该是"原子化"的，可独立检索和复用
 - 相关但不同的内容应拆分（如：问题原因 vs 解决方案）
 - 紧密耦合的内容保持在一起
+
+Space 判断（与拆分同步）：
+- 对照已确认的 space 范式（fintopia/selfmedia/tools/career）确定归属
+- 不确定时默认写入 Default，但需在展示时标注，方便后续迁移
 ```
 
 输出格式：
@@ -112,12 +127,12 @@ nmem m search "关键词"
 📋 识别到 N 个知识点：
 
 1. [类型] 标题
+   space: tools
    摘要：...
    
 2. [类型] 标题
+   space: selfmedia
    摘要：...
-   
-...
 ```
 
 #### 第 2 步：捕获代码上下文（自动执行）
@@ -146,15 +161,18 @@ nmem m search "知识点i的核心内容" -n 3
 📋 知识总结计划（共 N 个知识点）：
 
 1. [decision] 使用 Preact 替代 React
+   space: tools
    labels: decision,oa,preact
    去重结果: ✅ 无相似内容 → 新建
 
 2. [experience] 表格渲染性能问题排查
+   space: fintopia
    labels: experience,oa,react,performance
    去重结果: ⚠️ 发现相似(72%): "React 表格优化经验..."
    建议: 合并到已有知识
 
 3. [procedure] BatchModal 组件实现
+   space: fintopia
    labels: procedure,oa,react
    去重结果: ✅ 无相似内容 → 新建
 ```
@@ -417,6 +435,10 @@ memory_add(
 
 | 场景 | 命令 |
 |------|------|
+| 检查服务健康 | `curl -s http://127.0.0.1:14242/health \| python3 -c "import sys,json; d=json.load(sys.stdin); print(d['status'], d['database_connected'])"` |
+| 查看所有 space | `nmem spaces list` 或 `nmem l list` |
+| 切换搜索 space | `nmem m search "关键词" -s <space>` |
+| 移动记忆到指定 space | `nmem m move <id> --to-space <space> -f` |
 | 捕获代码上下文 | `python scripts/capture_code_context.py [--pretty]` |
 | 搜索知识 | `nmem m search "关键词"` |
 | 搜索知识（按 label 过滤）| `nmem m search "关键词" -l work -l react` |
@@ -484,6 +506,20 @@ echo "$FULL_CONTENT" | nmem m update <id> -t "新标题"
 
 ## Troubleshooting
 
+### `nmem m add` 返回 500 / API Error
+
+服务端错误，先检查健康状态：
+
+```bash
+curl -s http://127.0.0.1:14242/health | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'status: {d[\"status\"]}, db: {d[\"database_connected\"]}')"
+```
+
+- `status: ok, db: True` → 参数格式问题，按 validation error 步骤排查
+- `status: degraded, db: False` → 数据库断连，需要重启服务：
+  - **桌面应用模式**（macOS 常见）：退出 Nowledge Mem 桌面应用后重新打开
+  - **CLI serve 模式**：`nmem serve`
+  - 重启后确认 `db: True` 再重试
+
 ### `nmem m add` 报错 `validation error`
 
 按以下顺序排查：
@@ -499,18 +535,22 @@ echo "$FULL_CONTENT" | nmem m update <id> -t "新标题"
 
 ### 连续多条 `nmem m add` 全部失败
 
+先按上方「500 / API Error」步骤检查服务健康。如果确认是参数问题：
+
 ```bash
-# 检查服务健康
-curl https://mem.mengpeng.tech/health
-# status: ok + database_connected: true → 参数格式问题，按上面步骤排查
-# status: degraded → 服务端问题，NAS 宿主机执行：
-sudo systemctl restart nmem
+# 确认服务正常后，再按 validation error 步骤排查参数格式
 ```
 
 ### 搜索不到刚写入的内容
 
 - embedding 索引异步更新，写入后立刻搜 score 会偏低，**等 1-2 秒再搜**
 - 或用 `-l` 精确过滤已知 label 绕开相似度问题：`nmem m search "关键词" -l myproject`
+
+### `nmem m move` 报错
+
+- 缺少 `--to-space`：必须用 `--to-space <space名>` 指定目标 space
+- 交互式确认阻塞（EOFError）：加 `-f` 跳过确认
+- 正确格式：`nmem m move <id> --to-space <space> -f`
 
 ## 自动行为清单
 

@@ -15,15 +15,11 @@
 
 ## Architecture Overview
 
-<!-- 按需：适用于涉及多个模块、层次或服务的需求 -->
-
 [描述系统中本次改动涉及的主要组件、关系和数据流]
 
 ---
 
 ## Key Design Decisions
-
-<!-- 按需：只记录真正影响后续实现的关键决策 -->
 
 ### Decision 1: [决策标题]
 
@@ -33,12 +29,11 @@
   - B: [选项B] — [优劣]
 - **结论**: [最终选择及原因]
 - **影响**: [对实现和维护的影响]
+- **来源**: [官方文档 URL，或 UNVERIFIED]
 
 ---
 
 ## Module Design
-
-<!-- 按需：描述本次改动涉及的主要模块或边界 -->
 
 ### Module: [模块名称]
 
@@ -61,25 +56,14 @@
 
 ## Data Model
 
-<!-- 按需：如果需要单独补 data-model.md，可在这里说明其作用 -->
-
 [如涉及实体、状态、关系变化，可概述核心变化；详细内容可落到 data-model.md]
 
 ---
 
 ## Project Structure
 
-<!-- 必填：说明这次改动主要会触达哪些目录、文件或模块 -->
-
 ```text
-[根据实际改动填写，示例：]
-src/
-├── [修改] app/orders/page.tsx
-├── [新增] lib/orders/export.ts
-└── [修改] api/orders/route.ts
-
-tests/
-└── [修改] orders/export.test.ts
+[根据实际改动填写]
 ```
 
 ---
@@ -94,7 +78,7 @@ tests/
 
 ## Verification Strategy
 
-[说明后续如何验证实现是否达成目标，例如测试、typecheck、lint、局部手动验证、浏览器验收等]
+[说明后续如何验证实现是否达成目标]
 
 ---
 
@@ -114,3 +98,12 @@ tests/
 ## Notes
 
 [其他备注、约束、已知问题、待观察点]
+
+---
+
+## Sources
+
+| 决策 | 来源 URL | 备注 |
+|------|---------|------|
+| [Decision 1] | [URL] | |
+| [Decision 2] | UNVERIFIED | 未找到官方文档 |

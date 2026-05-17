@@ -1,75 +1,105 @@
-# personal-skills
+# skills
 
-这是我个人维护的 skills 源码仓库。
+[![skills.sh](https://skills.sh/b/NorthSeacoder/skills)](https://skills.sh/NorthSeacoder/skills)
 
-本仓库只管理我自己负责的 skill，包括：
+这是我维护的一组个人 skills 源仓库，现以 `skills.sh` 兼容仓库的方式分发。
 
-- 我原创并长期维护的 skill
-- 从外部仓库择优吸收后，明确由我继续维护的 skill
+## 当前公开 skill
 
-本仓库不是 `~/.agents/skills` 或 `~/.claude/skills` 的全量镜像。
+- `sdd`：单入口的软件交付工作流 skill，覆盖 ideate、specify、clarify、plan、tasks、implement、code-review、execute-plan
 
-## 仓库模型
+## 当前自用 skill
 
-- 源码目录：[`skills/`](./skills)
-- 注册表：[`registry/skills.yaml`](./registry/skills.yaml)
-- 发布目标：
-  - `~/.agents/skills`
-  - `~/.claude/skills`
-  - 可选：`~/.cursor/skills`
+以下 skill 同样放在 `skills/` 下，并可通过 `skills` 统一安装到本地运行时，但默认按自用 workflow 维护，不作为跨环境可用性承诺：
 
-发布后，运行时目录中的 skill 都是指向本仓库源码的软链接。
+- `knowledge-management`
+- `debug`
+- `git-guard`
 
-## 管理边界
+## 安装
 
-本仓库应该包含：
-
-- 我自己维护的特异性 skill
-- 我明确接管维护责任的 adopted skill
-
-本仓库不应该包含：
-
-- 第三方已安装 skill 的全量镜像
-- 运行时复制产物
-- 与 skill 无关的全局环境配置
-
-## 目录结构
-
-```text
-personal-skills/
-├── docs/
-├── skills/
-├── registry/
-├── scripts/
-└── .github/workflows/
-```
-
-## 命名约定
-
-本仓库内自行维护的 skill 默认保留原名。
-
-只有在以下情况下，才添加前缀：
-
-- 与现有全局已安装 skill 重名且无法安全复用
-- 需要显式区分“本地维护版本”和“外部安装版本”
-
-冲突时推荐前缀：
-
-- `nsc-`
-
-## 常用命令
-
-当前环境下脚本通过 `bash` 调用更稳妥：
+推荐直接安装整个仓库：
 
 ```bash
-bash scripts/verify-skills.sh
-bash scripts/publish-links.sh
-bash scripts/list-conflicts.sh
-bash scripts/unpublish-links.sh
+DISABLE_TELEMETRY=1 npx skills add NorthSeacoder/skills
 ```
+
+只安装 `sdd`：
+
+```bash
+DISABLE_TELEMETRY=1 npx skills add git@github.com:NorthSeacoder/skills.git --skill sdd
+```
+
+> `DISABLE_TELEMETRY=1` 用于关闭 `skills` CLI 的匿名 telemetry。  
+> 这只是安装时的隐私设置，不代表仓库内所有 skill 都适合公开分发。
+
+## 使用方式
+
+安装后，直接在会话里提到 `sdd` 即可，不需要再手动切换 `specify`、`plan`、`tasks` 等旧子 skill 名称。
+
+`sdd` 会按当前输入判断阶段：
+
+- 需求模糊时先 `ideate`
+- 需求清晰后写 `spec`
+- 再进入 `clarify`、`plan`、`tasks`
+- 实现阶段通过 `execute-plan` 控节奏，再进入 `implement`
+- 收尾时进入 `code-review`
+
+## 仓库结构
+
+```text
+skills/
+├── debug/
+├── git-guard/
+├── knowledge-management/
+├── sdd/
+│   ├── SKILL.md
+│   ├── references/stages/
+│   └── templates/
+```
+
+约定：
+
+- `skills/<name>/` 是 skill 源码目录
+- `references/stages/` 存放阶段方法论
+- `templates/` 存放写入工作区的模板
+- 不再使用 `registry + publish-links` 的本地软链接发布模型
+
+说明：
+
+- `sdd` 是当前主公开 skill
+- 其他 skill 也可通过 `skills` 安装到本地，用于统一管理
+- 但关闭 telemetry 只影响匿名上报，不等于这些 skill 自动具备公开分发承诺
+
+## 配置约定
+
+需要私有配置的 skill 应按 skill 维度说明环境变量，而不是混用单一仓库级配置。
+
+- 优先使用带 skill 前缀的变量名，例如 `SDD_*`
+- 若提供示例配置，放在 skill 自身目录下
+- README 只说明约定，不假设 `skills.sh` 平台会自动隔离或加载每个 skill 的 `.env`
+
+## 维护边界
+
+本仓库优先收录：
+
+- 会重复使用的 workflow skill
+- 可单独理解、可维护的 skill
+- 我明确愿意继续维护的 adopted skill
+
+不适合公开分发但仍有保留价值的 skill，可以继续保留源码，但不会默认写进公开安装说明。
 
 ## 文档
 
 - [架构说明](./docs/architecture.md)
 - [维护规范](./docs/maintenance.md)
 - [纳入策略](./docs/adoption-policy.md)
+
+## 致谢
+
+部分 skill 设计和工作流表达参考了以下仓库中的公开实践：
+
+- `~/personal/skills/agent-skills`
+- `~/personal/skills/gstack`
+- `~/personal/skills/skills`
+- `~/personal/skills/Waza`

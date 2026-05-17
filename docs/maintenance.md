@@ -2,28 +2,28 @@
 
 ## 日常流程
 
-对任意受管 skill，固定按下面顺序处理：
+对任意公开 skill，固定按下面顺序处理：
 
 1. 在 `skills/<name>/` 下编辑源码
-2. 如元数据有变化，更新 `registry/skills.yaml`
-3. 运行 `bash scripts/verify-skills.sh`
-4. 运行 `bash scripts/publish-links.sh`
+2. 若是 `sdd`，保持 `SKILL.md`、`references/stages/`、`templates/` 三层分离
+3. 更新 README 或相关文档中对外说明
+4. 检查安装命令、公开边界和模板引用是否仍然成立
 
 ## 定期审核
 
 周期性检查每个受管 skill：
 
 - 是否还在用
-- 是否仍兼容当前工具链
+- 是否仍兼容当前工具链或分发方式
 - 是否已被更好的方案替代
-- 注册表元数据是否仍准确
+- 对外说明是否仍准确
 
 ## 废弃策略
 
 如果某个 skill 不再值得维护：
 
-- 在 registry 中设置 `status: deprecated`
-- 从运行时目录取消发布
+- 从 README 的公开安装说明中移除
+- 若本地仍有旧软链接，显式清理，避免悬空链接
 - 如果保留源码仍有参考价值，可以继续留在仓库
 
 ## adopted skill 升级
@@ -36,11 +36,16 @@
 - 记录本地改动点
 - 重新确认当前运行环境假设仍成立
 
-## 运行时安全
+## 公开与私有边界
 
-发布脚本绝不能覆盖：
+- 不是所有保留在仓库内的 skill 都必须公开安装
+- 只有 README 明确写出的 skill，才算对外承诺
+- 需要私有前提的 skill，至少要避免被误宣传为“可直接安装即用”
 
-- 不属于本仓库管理的真实目录
-- 指向其他位置的软链接
+## 本地运行时清理
 
-出现冲突时，应显式处理，不要绕过。
+如果历史上用过软链接方式安装旧 skill：
+
+- 新结构生效后，显式删除旧 `specify`、`clarify`、`plan`、`tasks`、`implement`、`code-review`、`execute-plan` 等链接
+- 避免在 `~/.agents/skills` 或 `~/.claude/skills` 中留下悬空链接
+- 不把本地运行时目录当作源码来源
