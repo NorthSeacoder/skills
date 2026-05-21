@@ -5,6 +5,7 @@
 **Prerequisites**: spec.md (必须), plan.md (必须), data-model.md (按需)
 
 **Note**: 此模板由 `tasks` 命令填充。目标是生成一份真正可以执行的任务清单。
+**Artifact Rule**: `tasks.md` 是进入 `execute-plan` 或 `implement` 的核心上游产物，不应写成空标题列表。
 
 ---
 
@@ -60,3 +61,10 @@
 - 任务粒度过粗时，后续实现会失控
 - 任务粒度过碎时，维护成本会变高
 - 如果发现任务无法从 plan 直接落地，应返回 `plan` 调整
+
+---
+
+## Stage Readiness
+
+- 推荐下一步：`implement` / `execute-plan`
+- 阻塞项（如有）：[哪些问题仍阻塞执行]

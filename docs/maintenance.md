@@ -9,6 +9,8 @@
 3. 更新 README 或相关文档中对外说明
 4. 检查安装命令、公开边界和模板引用是否仍然成立
 
+对自用 skill 或仓库治理资产做改动时，也应同步检查 README、`docs/*` 和相关 workflow 说明是否仍然准确，避免目录现实和对外叙事漂移。
+
 ## 定期审核
 
 周期性检查每个受管 skill：
@@ -41,6 +43,8 @@
 - 不是所有保留在仓库内的 skill 都必须公开安装
 - 只有 README 明确写出的 skill，才算对外承诺
 - 需要私有前提的 skill，至少要避免被误宣传为“可直接安装即用”
+- `skills/` 下出现目录，不等于该 skill 自动成为公开分发接口
+- `docs/*`、`skills/sdd/references/`、`skills/sdd/templates/` 这类资产属于仓库治理或 workflow 支撑层，不属于 installable skill
 
 ## 本地运行时清理
 

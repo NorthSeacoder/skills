@@ -5,6 +5,8 @@
 **Status**: Draft  
 **Input**: 用户描述: "[原始需求]"
 
+> 写入本文件后，应同步更新 `specs/.active` 指向当前 workspace。
+
 ---
 
 ## User Scenarios & Testing *(mandatory)*
@@ -82,3 +84,10 @@
 
 - [问题1]
 - [问题2]
+
+---
+
+## Stage Readiness
+
+- 下一步建议：`clarify` / `plan`
+- 阻塞项（如有）：[哪些问题会阻塞下游阶段]

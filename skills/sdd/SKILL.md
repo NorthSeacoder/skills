@@ -27,14 +27,22 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 
 所有正式产物默认写入：
 
-- `specs/<feature>/spec.md`
-- `specs/<feature>/plan.md`
-- `specs/<feature>/tasks.md`
-- 按需：`data-model.md`、`acceptance.md`
+- `specs/<feature>/spec.md`：核心必备，定义需求、场景、范围与验收语义
+- `specs/<feature>/plan.md`：核心必备，定义实现方案、模块边界、风险与验证路径
+- `specs/<feature>/tasks.md`：核心必备，定义可执行任务、依赖顺序与验证点
+- `specs/<feature>/data-model.md`：按需，仅在实体、状态、关系或存储变化需要单独展开时创建
+- `specs/<feature>/acceptance.md`：按需，通常在实现完成后用于记录最终验收结论
 
 当前 active feature 记录在：
 
 - `specs/.active`
+
+`specs/.active` 的语义：
+
+- 表示默认续接的 feature 名称
+- 当用户没有显式指定 feature 时，优先据此恢复上下文
+- 若它指向的产物不存在、与用户当前目标明显不符，或发现内容失配，应显式说明失配并回退到“重新确认 feature / 上游阶段 / 更新 `.active`”之一
+- 在新建 `spec.md` 或显式切换 feature 后，应同步更新 `specs/.active`
 
 ## 阶段路由
 
@@ -62,6 +70,8 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 - 不要要求用户记住旧子 skill 名称
 - 每一阶段结束时，都要明确下一步推荐
 - 如果发现上游产物不足，应返回上游阶段，而不是硬推进
+- `sdd` 只负责软件交付流程，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill
+- 对明显不适合走完整 SDD 流程的小改动，应明确说明不进入完整工作区流程，而不是勉强套阶段
 
 ## 模板与资产
 
@@ -85,3 +95,8 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 2. 当前依据是什么
 3. 本阶段将产出或更新什么
 4. 本阶段结束后的下一步建议
+
+如果发现上游产物不足或 `specs/.active` 失配，还必须补充：
+
+5. 为什么需要回退或切换
+6. 建议回到哪个阶段或更新哪个工作区文件

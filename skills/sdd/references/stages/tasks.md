@@ -16,6 +16,8 @@ template: ../../templates/tasks-template.md
 
 - `specs/<feature>/tasks.md`
 
+`tasks.md` 是进入 `execute-plan` 或 `implement` 的核心上游产物；没有它时，不应直接把 plan 当任务执行。
+
 ## 核心原则
 
 - 每个任务都必须能执行，而不是空标题
@@ -30,7 +32,19 @@ template: ../../templates/tasks-template.md
 3. 确认当前方案足以落成任务
 4. 读取 `templates/tasks-template.md` 生成 `tasks.md`
 
+## 回退条件
+
+- 若 `plan.md` 不存在，返回 `plan`
+- 若 `spec.md` 不存在，返回 `specify`
+- 若方案仍不足以拆成明确任务，返回 `plan` 补强，而不是写空任务标题
+
 ## 下一步
 
 - 任务较少且边界清晰：进入 `implement`
 - 任务较多或需控节奏：先进入 `execute-plan`
+
+## 阶段完成标准
+
+- `tasks.md` 中每个任务都具备边界和验证方式
+- 已说明任务依赖顺序与关键路径
+- 已能判断应直接 `implement` 还是先 `execute-plan`

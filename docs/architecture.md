@@ -28,6 +28,16 @@
 
 README、AGENTS 和 `docs/*` 共同定义哪些 skill 对外公开、如何安装、如何使用、有哪些配置前提。
 
+## 内容边界
+
+仓库中的内容默认分为三类：
+
+- 公开分发 skill：明确写入 README 安装叙事并承诺基本可移植
+- 自用 skill：仍保留在 `skills/` 下维护，但默认不承诺跨环境可用
+- 仓库治理与 workflow 资产：如 `docs/*`、`skills/sdd/references/`、`skills/sdd/templates/`，用于维护和支撑 skill，不属于公开安装接口
+
+目录位置只说明源码放在哪，不单独决定是否公开。是否公开以 README 和治理文档中的明确声明为准。
+
 ## SDD 收敛模型
 
 当前主公开 skill 是 `sdd`。
@@ -48,6 +58,7 @@ README、AGENTS 和 `docs/*` 共同定义哪些 skill 对外公开、如何安�
 
 - 公开 skill：会出现在 README 安装说明中，并承诺基本可移植
 - 非默认公开 skill：可以保留源码，但不会自动写进公开安装说明
+- 仓库治理与 workflow 资产：不会被当作 installable skill 对外承诺
 
 是否公开不由 telemetry 决定。关闭 telemetry 只影响 CLI 统计上报，不影响 skill 源码本身是否公开可见。
 

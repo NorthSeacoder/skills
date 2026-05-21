@@ -4,13 +4,20 @@
 
 This repository manages installable skill sources for `skills.sh`.
 
+Repository content is intentionally split into:
+
+- public skills declared in README
+- private/adopted skills kept under `skills/` without cross-environment portability promises
+- repository governance and workflow assets such as `docs/*`, `skills/sdd/references/`, and `skills/sdd/templates/`
+
 - `skills/<skill-name>/`: canonical source for each maintained skill; every public skill directory must contain `SKILL.md`
 - `skills/sdd/references/stages/`: stage-specific guidance used by the single-entry `sdd` workflow skill
 - `skills/sdd/templates/`: templates written into `specs/<feature>/`
 - `docs/`: architecture, maintenance policy, and adoption guidance
 - `.github/workflows/`: CI automation
 
-Example public entrypoints: `skills/sdd/SKILL.md`, `skills/knowledge-management/SKILL.md`.
+Current public entrypoint: `skills/sdd/SKILL.md`.
+Examples of private skill sources: `skills/knowledge-management/SKILL.md`, `skills/debug/SKILL.md`.
 
 ## Build, Test, and Development Commands
 
@@ -41,6 +48,7 @@ There is no dedicated unit test suite for repository content; verification is st
 - Ensure every public skill still has a valid `SKILL.md`
 - Ensure `sdd` stage references and templates resolve after refactors
 - Re-check README installation commands and public/private skill claims after structural changes
+- Re-check that governance assets are not described as public install interfaces
 - If you clean up old symlinks in local runtime directories, make sure no dangling links remain
 
 ## Commit & Pull Request Guidelines

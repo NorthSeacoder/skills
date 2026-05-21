@@ -4,6 +4,7 @@
 **Input**: Feature specification from `specs/[工作区名称]/spec.md`
 
 **Note**: 此模板由 `plan` 命令填充。章节按需使用，不需要的章节可以省略。
+**Artifact Rule**: `plan.md` 为核心产物；仅在实体、状态、关系或存储变化需要展开时，再补 `data-model.md`。
 
 ---
 
@@ -82,6 +83,14 @@
 
 ---
 
+## Stage Readiness
+
+- 是否需要 `data-model.md`：[需要 / 不需要 + 原因]
+- 下一步建议：`tasks` / `clarify`
+- 阻塞项（如有）：[哪些问题仍阻塞任务拆解]
+
+---
+
 ## Design Artifacts
 
 本次计划涉及的产物：
@@ -89,7 +98,7 @@
 | 产物 | 是否需要 | 说明 |
 |------|---------|------|
 | plan.md | 必须 | 主实现计划 |
-| data-model.md | 按需 | 涉及实体、状态或存储变化时生成 |
+| data-model.md | 按需 | 涉及实体、状态、关系或存储变化时生成 |
 | tasks.md | 后续阶段生成 | 由 `tasks` 阶段产出 |
 | acceptance.md | 后续阶段生成 | 用于最终验收结论 |
 

@@ -24,6 +24,11 @@ source: skills/ideate/SKILL.md
 - 默认产出到对话中
 - 若已经足够清晰，可直接切换到 `specify` 并写入 `specs/<feature>/spec.md`
 
+## 回退 / 停止条件
+
+- 如果需求已经足够清晰，不继续发散，直接进入 `specify`
+- 如果用户实际要做的是极小改动或单点修复，应停止完整 SDD 路由并改走普通实现流程
+
 ## 执行原则
 
 - 先发散后收敛，不要一开始就收窄
@@ -56,3 +61,9 @@ source: skills/ideate/SKILL.md
 
 - 已足够清晰：进入 `specify`
 - 仍有关键不确定：继续 `ideate`
+
+## 阶段完成标准
+
+- 已明确 1-3 个核心用户场景
+- 已说明本轮包含与不包含内容
+- 已判断下一步是 `specify`、继续 `ideate`，还是退出完整 SDD 流程

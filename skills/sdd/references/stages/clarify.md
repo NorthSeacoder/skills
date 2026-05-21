@@ -32,7 +32,18 @@ source: skills/clarify/SKILL.md
 4. 用户回答后回写 `spec.md`
 5. 判断是否可以进入 `plan`
 
+## 回退条件
+
+- 若 `spec.md` 不存在，返回 `specify`
+- 若澄清过程中发现问题根源是需求本身未收敛，而不是局部歧义，返回 `ideate` 或 `specify`
+
 ## 下一步
 
 - 关键歧义已清：进入 `plan`
 - 仍有阻塞项：继续 `clarify`
+
+## 阶段完成标准
+
+- 阻塞 `plan / tasks / implement` 的关键歧义已被清理或显式界定
+- 相关结论已回写 `spec.md`
+- 已能解释为什么可以进入 `plan`，或为什么必须继续 `clarify`

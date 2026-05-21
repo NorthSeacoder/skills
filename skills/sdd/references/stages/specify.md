@@ -19,6 +19,8 @@ checklist: ../../templates/checklist-template.md
 - `specs/<feature>/spec.md`
 - `specs/.active`
 
+`spec.md` 是后续 `clarify`、`plan`、`tasks` 的上游核心产物；没有它时，不应继续生成下游文档。
+
 ## 核心原则
 
 - `spec` 只回答需求，不回答实现
@@ -34,7 +36,18 @@ checklist: ../../templates/checklist-template.md
 4. 读取 `templates/spec-template.md` 生成 `spec.md`
 5. 需要时配合 `templates/checklist-template.md` 做规格质量检查
 
+## 回退条件
+
+- 若探索后发现需求仍明显发散或用户目标不稳定，返回 `ideate`
+- 若 feature 名称、工作区或 `specs/.active` 与当前目标不符，应先修正再继续写 spec
+
 ## 下一步
 
 - 有关键歧义：进入 `clarify`
 - 无关键歧义：进入 `plan`
+
+## 阶段完成标准
+
+- `spec.md` 已写入 `specs/<feature>/`
+- `specs/.active` 已指向当前 feature
+- spec 足以支撑 `clarify` 或 `plan`，而不是只有标题和空框架
