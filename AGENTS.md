@@ -13,6 +13,9 @@ Repository content is intentionally split into:
 - `skills/<skill-name>/`: canonical source for each maintained skill; every public skill directory must contain `SKILL.md`
 - `skills/sdd/references/stages/`: stage-specific guidance used by the single-entry `sdd` workflow skill
 - `skills/sdd/templates/`: templates written into `specs/<feature>/`
+- `skills/sdd/agents/source/`: **唯一真相** — subagent 定义的 YAML 源文件，所有编辑必须在此目录进行
+- `skills/sdd/agents/claude-code/`: 自动生成，禁止手动编辑（由 `scripts/generate-agents.sh` 从 source/ 派生）
+- `skills/sdd/agents/codex/`: 自动生成，禁止手动编辑（由 `scripts/generate-agents.sh` 从 source/ 派生）
 - `docs/`: architecture, maintenance policy, and adoption guidance
 - `.github/workflows/`: CI automation
 
@@ -29,6 +32,29 @@ Use the repo from the repository root:
 - `git status` and `git diff --stat`: review repository-wide migrations before cleanup
 
 If you change installable structure or README installation guidance, validate those paths before merging.
+
+## Local Install Verification
+
+When you update anything under `skills/` and then reinstall the skill locally, verify the installed copy against the repo before assuming the update landed:
+
+```bash
+bash ./scripts/check-installed-skill.sh sdd
+```
+
+Default behavior:
+
+- checks `~/.agents/skills/sdd`
+- checks `~/.claude/skills/sdd`
+- checks `~/.codex/skills/sdd`
+- compares each installed copy against `skills/sdd` in this repo
+
+If you are working on another skill, pass the skill name explicitly:
+
+```bash
+bash ./scripts/check-installed-skill.sh <skill-name>
+```
+
+If the script reports a diff, the local install is stale or incomplete even if `skills add` appeared to succeed.
 
 ## Coding Style & Naming Conventions
 

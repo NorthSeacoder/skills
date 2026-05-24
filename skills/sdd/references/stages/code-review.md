@@ -37,6 +37,14 @@ source: skills/code-review/SKILL.md
 - 有阻塞问题：返回 `implement`
 - 无阻塞问题：准备提交或继续后续交付
 
+## Subagent 派发
+
+若前置检查确认 subagent 可用，进入审查时派发：
+
+- `sdd-reviewer`：输入为变更文件列表 + diff 摘要（或 git diff 输出）；期望输出为按 CRITICAL/HIGH/MEDIUM/LOW 分级的发现列表（≤20 条）+ 末尾 `Verdict:` 行（PASS / CONDITIONAL PASS / FAIL）
+
+派发后等待返回，将审查结论整合到主线程的最终判断中。不可用时退回主线程手动审查。
+
 ## 阶段完成标准
 
 - 已明确列出阻塞问题或确认无阻塞问题

@@ -45,13 +45,16 @@ README、AGENTS 和 `docs/*` 共同定义哪些 skill 对外公开、如何安�
 它不再拆成多个独立 installable skill，而是统一收敛为：
 
 - `skills/sdd/SKILL.md`：单入口路由
+- `skills/sdd/agents/`：Codex / Claude Code 的配套 subagent 源定义
 - `skills/sdd/references/stages/`：阶段方法论
+- `skills/sdd/scripts/`：subagent 安装与校验脚本
 - `skills/sdd/templates/`：规格、计划、任务等模板
 
 这样做的目的：
 
 - 对外只有一个清晰入口
 - 对内仍然保留阶段化方法论
+- subagents 作为 runtime adapter 显式安装，不混入 `skills.sh` 的 skill 安装职责
 - 模板和流程说明分层维护，避免巨型 `SKILL.md`
 
 ## 公开边界
@@ -70,3 +73,4 @@ README、AGENTS 和 `docs/*` 共同定义哪些 skill 对外公开、如何安�
 - 脱离原始环境后依然成立
 - 我愿意自己维护
 - 前置依赖和配置方式可以被清楚说明
+- 需要额外 runtime 资产时，必须提供显式安装和校验路径

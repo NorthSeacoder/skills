@@ -36,12 +36,34 @@ DISABLE_TELEMETRY=1 npx skills add NorthSeacoder/skills
 DISABLE_TELEMETRY=1 npx skills add git@github.com:NorthSeacoder/skills.git --skill sdd
 ```
 
+启用 `sdd` 的 Codex / Claude Code subagents 需要第二步安装。`skills.sh` 只安装 skill 本体，不会自动写入 `.codex/agents` 或 `.claude/agents`：
+
+```bash
+bash ~/.agents/skills/sdd/scripts/install-sdd-subagents.sh all
+```
+
+如果你的 `sdd` 安装在 `~/.codex/skills/sdd` 或 `~/.claude/skills/sdd`，使用对应目录下的同名脚本即可。
+
+项目级安装示例：
+
+```bash
+bash ~/.agents/skills/sdd/scripts/install-sdd-subagents.sh all --scope project --project-dir /path/to/project
+```
+
 > `DISABLE_TELEMETRY=1` 用于关闭 `skills` CLI 的匿名 telemetry。  
 > 这只是安装时的隐私设置，不代表仓库内所有 skill 都适合公开分发。
 
 ## 使用方式
 
 安装后，直接在会话里提到 `sdd` 即可，不需要再手动切换 `specify`、`plan`、`tasks` 等旧子 skill 名称。
+
+如果已安装配套 subagents，`sdd` 在适合的阶段会显式派发：
+
+- `sdd_explorer` / `sdd-explorer`：只读探索代码库现状
+- `sdd_reviewer` / `sdd-reviewer`：交付前审查
+- `sdd_docs_researcher` / `sdd-docs-researcher`：查官方文档和版本行为
+
+subagent 安装带有版本控制：安装脚本会比较源版本与已安装版本，拒绝降级（除非 `--force`），并写入 `.sdd-agents-manifest` 供自检使用。`sdd` 激活时会自动检测 manifest，若发现版本过旧或缺失会提示更新命令，但不阻塞流程。
 
 `sdd` 会按当前输入判断阶段：
 
@@ -51,7 +73,35 @@ DISABLE_TELEMETRY=1 npx skills add git@github.com:NorthSeacoder/skills.git --ski
 - 实现阶段通过 `execute-plan` 控节奏，再进入 `implement`
 - 收尾时进入 `code-review`
 
-`sdd` 只负责软件交付 workflow 本身，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill。
+`sdd` 只负责软件交付 workflow 本身，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill.
+
+## 更新后验证
+
+如果你更新了 `skills/` 下的 skill，并重新执行了本地安装，建议马上验证已安装副本是否真的和仓库一致：
+
+```bash
+bash ./scripts/check-installed-skill.sh sdd
+```
+
+这个脚本默认会检查：
+
+- `~/.agents/skills/sdd`
+- `~/.claude/skills/sdd`
+- `~/.codex/skills/sdd`
+
+并把它们和仓库里的 `skills/sdd` 做逐项比对。
+
+如果你验证的是别的 skill，把 `sdd` 换成对应名字即可：
+
+```bash
+bash ./scripts/check-installed-skill.sh <skill-name>
+```
+
+验证 `sdd` subagents：
+
+```bash
+bash ~/.agents/skills/sdd/scripts/check-installed-sdd-subagents.sh all
+```
 
 ## 仓库结构
 
@@ -66,6 +116,8 @@ skills/
 ├── knowledge-management/
 ├── sdd/
 │   ├── SKILL.md
+│   ├── agents/
+│   ├── scripts/
 │   ├── references/stages/
 │   └── templates/
 ```
@@ -73,6 +125,8 @@ skills/
 约定：
 
 - `skills/<name>/` 是 skill 源码目录
+- `skills/sdd/agents/` 存放 Codex / Claude Code subagent 源定义
+- `skills/sdd/scripts/` 存放 subagent 安装和校验脚本
 - `skills/sdd/references/stages/` 存放 `sdd` 的阶段方法论
 - `skills/sdd/templates/` 存放写入 `specs/<feature>/` 的模板
 - `docs/` 存放仓库治理、维护边界和纳入策略

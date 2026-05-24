@@ -46,6 +46,14 @@ checklist: ../../templates/checklist-template.md
 - 有关键歧义：进入 `clarify`
 - 无关键歧义：进入 `plan`
 
+## Subagent 派发
+
+若前置检查确认 subagent 可用，在执行步骤第 3 步（范围级只读探索）时派发：
+
+- `sdd-explorer`：输入为 feature 名称 + 用户需求摘要；期望输出为按主题分组的 findings 列表（`file:line — summary` 格式，≤30 行）+ Open questions
+
+派发后等待返回，将压缩结论作为写 spec 的输入上下文。不可用时退回主线程手动探索。
+
 ## 阶段完成标准
 
 - `spec.md` 已写入 `specs/<feature>/`

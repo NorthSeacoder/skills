@@ -9,6 +9,8 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 
 你的职责不是把所有阶段规则都塞进一个文件，而是根据当前输入判断最合适的阶段，调用对应的阶段说明，并维持统一的工作区约定。
 
+如果当前运行环境支持 subagent，并且当前阶段适合并行探索、方案挑战、文档核验或交付审查，应优先使用本 skill 配套的 `sdd_*` subagents，避免把所有读工作堆在主线程。
+
 ## 何时使用
 
 适用于：
@@ -44,6 +46,43 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 - 若它指向的产物不存在、与用户当前目标明显不符，或发现内容失配，应显式说明失配并回退到“重新确认 feature / 上游阶段 / 更新 `.active`”之一
 - 在新建 `spec.md` 或显式切换 feature 后，应同步更新 `specs/.active`
 
+## Subagent 约定
+
+本 skill 在 Codex 和 Claude Code 中都支持配套 subagents。职责分工固定如下：
+
+- `sdd_explorer` / `sdd-explorer`：只读探索代码库和现状
+- `sdd_reviewer` / `sdd-reviewer`：交付前审查
+- `sdd_docs_researcher` / `sdd-docs-researcher`：查官方文档和版本行为
+
+使用原则：
+
+- 主线程保留用户澄清、最终决策、写入产物和结果整合
+- subagent 只返回压缩后的事实、风险、建议，不回灌长日志
+- 读多写少的阶段优先派发 subagent
+- 写操作和最终合并留给主线程
+
+安装方式：
+
+- `skills.sh` 只安装 `sdd` skill 本体
+- subagents 需要在 skill 安装后再单独安装到 Codex / Claude Code runtime 目录
+- skill 包内自带 `scripts/install-sdd-subagents.sh` 和 `scripts/check-installed-sdd-subagents.sh`
+- 默认安装目标是用户级 runtime；如需项目级 runtime，可用 `--scope project`
+
+## 前置检查
+
+进入阶段路由之前，先执行一次 subagent 可用性检查：
+
+1. 检测当前运行环境的 agents 目录下是否存在 `.sdd-agents-manifest`
+   - Claude Code: `~/.claude/agents/.sdd-agents-manifest`（user scope）或 `.claude/agents/.sdd-agents-manifest`（project scope）
+   - Codex: `~/.codex/agents/.sdd-agents-manifest`（user scope）或 `.codex/agents/.sdd-agents-manifest`（project scope）
+2. 若 manifest 存在，对比其中各 agent 版本与 skill 包内 `agents/source/*.yaml` 的 version 字段
+3. 根据对比结果：
+   - 全部匹配或 ahead：正常进入阶段路由，subagent 可用
+   - 存在 STALE 或 MISSING：提示用户可运行 `bash <skill-path>/scripts/install-sdd-subagents.sh` 更新，但不阻塞流程
+   - manifest 不存在：提示 subagent 未安装，退回单线程模式，不阻塞
+
+此检查是 LM 层面的指令判断，不是 shell 执行。目的是让主线程在派发 subagent 前知道是否可用，避免派发后才发现缺失。
+
 ## 阶段路由
 
 根据当前输入判断进入哪一阶段：
@@ -63,6 +102,29 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
    - 再进入 `references/stages/implement.md`
 7. **实现已完成，需要交付前检查**
    - 进入 `references/stages/code-review.md`
+
+## 委派模板
+
+进入适合并行的阶段时，应明确写出要派发的 agents、等待策略和回传格式。
+
+探索 + 文档核验（specify / plan 阶段）：
+
+```text
+请并行派发 sdd_explorer 和 sdd_docs_researcher。
+sdd_explorer 负责梳理当前代码路径和现状，sdd_docs_researcher 负责核对官方文档和版本行为。
+等两个 subagent 都返回后，只保留压缩结论，不要回灌原始日志。
+```
+
+交付审查（code-review 阶段）：
+
+```text
+请派发 sdd_reviewer 对本次变更做交付前审查。
+输入：变更文件列表和 diff 摘要。
+输出：按 CRITICAL/HIGH/MEDIUM/LOW 分级的发现列表 + 最终 Verdict。
+```
+
+Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、`sdd-reviewer`）。
+如果前置检查发现 subagent 未安装或版本过旧，退回单线程流程，不阻塞。
 
 ## 路由原则
 

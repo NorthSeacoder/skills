@@ -63,9 +63,36 @@ do
   require_file "$path"
 done
 
+echo "Verifying SDD subagent assets..."
+for path in \
+  skills/sdd/agents/source/sdd-explorer.yaml \
+  skills/sdd/agents/source/sdd-reviewer.yaml \
+  skills/sdd/agents/source/sdd-docs-researcher.yaml \
+  skills/sdd/agents/codex/sdd-explorer.toml \
+  skills/sdd/agents/codex/sdd-reviewer.toml \
+  skills/sdd/agents/codex/sdd-docs-researcher.toml \
+  skills/sdd/agents/claude-code/sdd-explorer.md \
+  skills/sdd/agents/claude-code/sdd-reviewer.md \
+  skills/sdd/agents/claude-code/sdd-docs-researcher.md \
+  skills/sdd/scripts/generate-agents.sh \
+  skills/sdd/scripts/install-sdd-subagents.sh \
+  skills/sdd/scripts/check-installed-sdd-subagents.sh
+do
+  require_file "$path"
+done
+
+echo "Verifying derived agents match source (drift check)..."
+if command -v yq >/dev/null 2>&1; then
+  bash skills/sdd/scripts/generate-agents.sh --check || fail "derived agents drift from source — run: bash skills/sdd/scripts/generate-agents.sh"
+else
+  echo "WARN: yq not installed, skipping generate-agents drift check" >&2
+fi
+
 echo "Verifying SDD routing and artifact rules..."
 require_grep 'specs/\.active' "skills/sdd/SKILL.md"
 require_grep '`sdd` 只负责软件交付流程' "skills/sdd/SKILL.md"
+require_grep 'sdd_explorer' "skills/sdd/SKILL.md"
+require_grep 'install-sdd-subagents\.sh' "skills/sdd/SKILL.md"
 require_grep '## 回退条件' "skills/sdd/references/stages/plan.md"
 require_grep '## 阶段完成标准' "skills/sdd/references/stages/tasks.md"
 require_grep '## Stage Readiness' "skills/sdd/templates/spec-template.md"
@@ -73,6 +100,7 @@ require_grep 'Artifact Rule' "skills/sdd/templates/plan-template.md"
 
 echo "Verifying workflow wiring..."
 require_file ".github/workflows/verify.yml"
+require_file "scripts/check-installed-skill.sh"
 require_grep 'bash \./scripts/verify-skills\.sh' ".github/workflows/verify.yml"
 
 echo "verify-skills.sh: OK"

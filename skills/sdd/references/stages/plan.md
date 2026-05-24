@@ -46,6 +46,15 @@ data_model_template: ../../templates/data-model-template.md
 - 方案稳定：进入 `tasks`
 - 仍存在关键歧义：返回 `clarify`
 
+## Subagent 派发
+
+若前置检查确认 subagent 可用，在执行步骤第 2-3 步时可并行派发：
+
+- `sdd-explorer`：输入为 spec 中的关键模块/路径；期望输出为代码现状 findings（`file:line — summary`，≤30 行）
+- `sdd-docs-researcher`：输入为技术栈关键词 + 待确认的框架行为；期望输出为官方文档结论（≤15 行 + source URLs）
+
+两个 subagent 并行执行，返回后合并压缩结论作为方案设计的输入。不可用时退回主线程顺序执行。
+
 ## 阶段完成标准
 
 - `plan.md` 已说明主要模块边界、关键决策、风险和验证路径
