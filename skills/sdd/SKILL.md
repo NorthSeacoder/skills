@@ -1,6 +1,6 @@
 ---
 name: sdd
-description: 单入口的软件交付工作流 skill。覆盖 ideate、specify、clarify、plan、tasks、implement、code-review、execute-plan 的阶段判断、产物约定与下一步衔接。
+description: 单入口的软件交付工作流 skill。覆盖 ideate、specify、clarify、plan、tasks、implement、verify、closeout、execute-plan 的阶段判断、产物约定与下一步衔接。
 ---
 
 # SDD
@@ -9,14 +9,14 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 
 你的职责不是把所有阶段规则都塞进一个文件，而是根据当前输入判断最合适的阶段，调用对应的阶段说明，并维持统一的工作区约定。
 
-如果当前运行环境支持 subagent，并且当前阶段适合并行探索、方案挑战、文档核验或交付审查，应优先使用本 skill 配套的 `sdd_*` subagents，避免把所有读工作堆在主线程。
+如果当前运行环境支持 subagent，并且当前阶段适合并行探索、文档核验或验证审查，应优先使用本 skill 配套的 `sdd_*` subagents，避免把所有读工作堆在主线程。
 
 ## 何时使用
 
 适用于：
 
 - 用户明确提到 `sdd`
-- 用户希望从模糊想法推进到规格、方案、任务、实现或审查
+- 用户希望从模糊想法推进到规格、方案、任务、实现、验证或收尾
 - 当前工作已经在 `specs/<feature>/` 流程中，需要继续下一阶段
 
 通常不必使用：
@@ -91,7 +91,7 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
    - 进入 `references/stages/ideate.md`
 2. **需求已清晰，需要固化 spec**
    - 进入 `references/stages/specify.md`
-3. **spec 已有，但存在关键歧义**
+3. **spec 已有，但术语、边界、历史决策或关键前提仍未对齐**
    - 进入 `references/stages/clarify.md`
 4. **spec 已稳定，需要技术方案**
    - 进入 `references/stages/plan.md`
@@ -100,8 +100,25 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 6. **tasks 已明确，需要推进实现**
    - 进入 `references/stages/execute-plan.md` 决定节奏
    - 再进入 `references/stages/implement.md`
-7. **实现已完成，需要交付前检查**
-   - 进入 `references/stages/code-review.md`
+7. **实现已完成，需要验证是否真的满足完成条件**
+   - 进入 `references/stages/verify.md`
+8. **验证通过，需要做收尾与退役检查**
+   - 进入 `references/stages/closeout.md`
+
+主链语义是：
+
+- `Clarify / Domain Alignment`
+- `Spec`
+- `Plan`
+- `Execute`
+- `Verify`
+- `Closeout`
+
+其中：
+
+- `ideate`、`specify` 是进入主链前的需求成形入口
+- `tasks`、`execute-plan`、`implement` 是 `Execute` 阶段的执行支撑资产
+- `code-review` 不再是主链终点，而是 `Verify` 内的一个检查动作
 
 ## 委派模板
 
@@ -115,7 +132,7 @@ sdd_explorer 负责梳理当前代码路径和现状，sdd_docs_researcher 负�
 等两个 subagent 都返回后，只保留压缩结论，不要回灌原始日志。
 ```
 
-交付审查（code-review 阶段）：
+验证审查（verify 阶段）：
 
 ```text
 请派发 sdd_reviewer 对本次变更做交付前审查。
@@ -132,6 +149,8 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 - 不要要求用户记住旧子 skill 名称
 - 每一阶段结束时，都要明确下一步推荐
 - 如果发现上游产物不足，应返回上游阶段，而不是硬推进
+- 没有 fresh evidence，不应宣布 feature 已完成
+- `Closeout` 必须检查旧逻辑退役、发布跟进和文档/知识同步，而不是礼貌性收尾
 - `sdd` 只负责软件交付流程，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill
 - 对明显不适合走完整 SDD 流程的小改动，应明确说明不进入完整工作区流程，而不是勉强套阶段
 

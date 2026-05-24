@@ -6,7 +6,7 @@ data_model_template: ../../templates/data-model-template.md
 
 # Plan Stage
 
-基于 `spec.md` 生成能指导实现的 `plan.md`。重点是模块边界、数据流、接口、风险和验证路径，而不是任务拆解。
+基于 `spec.md` 生成能指导实现的 `plan.md`。重点是模块边界、数据流、接口、风险、执行治理和验证路径，而不是任务拆解。
 
 ## 何时进入
 
@@ -26,14 +26,16 @@ data_model_template: ../../templates/data-model-template.md
 - 先理解现状，再做设计决策
 - `plan` 负责怎么做，不负责拆任务
 - 框架特定决策必须标注来源
+- 方案需要说明执行期如何控制 checkpoint、drift 和验证收口
 
 ## 执行步骤
 
 1. 读取 `spec.md`
 2. 做方案级只读探索
 3. 按需检测技术栈、查阅官方文档并标注来源
-4. 读取 `templates/plan-template.md` 生成 `plan.md`
-5. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
+4. 明确执行治理与验证路径
+5. 读取 `templates/plan-template.md` 生成 `plan.md`
+6. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
 
 ## 回退条件
 
@@ -57,6 +59,6 @@ data_model_template: ../../templates/data-model-template.md
 
 ## 阶段完成标准
 
-- `plan.md` 已说明主要模块边界、关键决策、风险和验证路径
+- `plan.md` 已说明主要模块边界、关键决策、风险、执行治理和验证路径
 - 已判断是否需要 `data-model.md`
 - 方案已足够支撑任务拆解，而不是仍停留在需求复述

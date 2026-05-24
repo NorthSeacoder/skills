@@ -2,15 +2,15 @@
 source: skills/code-review/SKILL.md
 ---
 
-# Code Review Stage
+# Code Review Check
 
-针对当前改动做交付前审查，优先识别风险、回归、缺失测试、CI 和发布问题，而不是泛泛讲优化建议。
+作为 `Verify` 阶段内的一个检查动作，针对当前改动做交付前审查，优先识别风险、回归、缺失测试、CI 和发布问题，而不是泛泛讲优化建议。
 
 ## 何时进入
 
-- 一组改动已经完成
-- 准备进入提交、合并或发布
-- feature 已按 `implement` 或 `execute-plan` 推进完成
+- 一组改动已经完成并进入 `Verify`
+- 需要形成 review 结论，作为完成判定的一部分
+- feature 已按 `implement` 或 `execute-plan` 推进到可验证状态
 
 ## 审查重点
 
@@ -35,7 +35,7 @@ source: skills/code-review/SKILL.md
 ## 下一步
 
 - 有阻塞问题：返回 `implement`
-- 无阻塞问题：准备提交或继续后续交付
+- 无阻塞问题：把结论汇入 `Verify`，继续 runtime 检查、evidence 判定或进入 `Closeout`
 
 ## Subagent 派发
 
@@ -49,4 +49,4 @@ source: skills/code-review/SKILL.md
 
 - 已明确列出阻塞问题或确认无阻塞问题
 - 已说明验证覆盖与残余风险
-- 已给出下一步是返回实现还是准备提交/交付
+- 已给出下一步是返回实现还是继续 `Verify`

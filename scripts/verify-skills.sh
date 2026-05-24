@@ -47,7 +47,9 @@ for path in \
   skills/sdd/references/stages/tasks.md \
   skills/sdd/references/stages/execute-plan.md \
   skills/sdd/references/stages/implement.md \
-  skills/sdd/references/stages/code-review.md
+  skills/sdd/references/stages/code-review.md \
+  skills/sdd/references/stages/verify.md \
+  skills/sdd/references/stages/closeout.md
 do
   require_file "$path"
 done
@@ -74,6 +76,7 @@ for path in \
   skills/sdd/agents/claude-code/sdd-explorer.md \
   skills/sdd/agents/claude-code/sdd-reviewer.md \
   skills/sdd/agents/claude-code/sdd-docs-researcher.md \
+  skills/sdd/scripts/validate-sdd.sh \
   skills/sdd/scripts/generate-agents.sh \
   skills/sdd/scripts/install-sdd-subagents.sh \
   skills/sdd/scripts/check-installed-sdd-subagents.sh
@@ -93,10 +96,18 @@ require_grep 'specs/\.active' "skills/sdd/SKILL.md"
 require_grep '`sdd` 只负责软件交付流程' "skills/sdd/SKILL.md"
 require_grep 'sdd_explorer' "skills/sdd/SKILL.md"
 require_grep 'install-sdd-subagents\.sh' "skills/sdd/SKILL.md"
+require_grep 'references/stages/verify\.md' "skills/sdd/SKILL.md"
+require_grep 'references/stages/closeout\.md' "skills/sdd/SKILL.md"
+require_grep 'Clarify / Domain Alignment' "skills/sdd/SKILL.md"
 require_grep '## 回退条件' "skills/sdd/references/stages/plan.md"
 require_grep '## 阶段完成标准' "skills/sdd/references/stages/tasks.md"
 require_grep '## Stage Readiness' "skills/sdd/templates/spec-template.md"
 require_grep 'Artifact Rule' "skills/sdd/templates/plan-template.md"
+require_grep '^# Verify Stage$' "skills/sdd/references/stages/verify.md"
+require_grep '^# Closeout Stage$' "skills/sdd/references/stages/closeout.md"
+
+echo "Running SDD structural validator..."
+bash skills/sdd/scripts/validate-sdd.sh
 
 echo "Verifying workflow wiring..."
 require_file ".github/workflows/verify.yml"

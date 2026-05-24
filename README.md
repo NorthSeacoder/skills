@@ -12,7 +12,7 @@
 
 ## 当前公开 skill
 
-- `sdd`：单入口的软件交付工作流 skill，覆盖 ideate、specify、clarify、plan、tasks、implement、code-review、execute-plan
+- `sdd`：单入口的软件交付工作流 skill，覆盖 ideate、specify、clarify、plan、tasks、implement、verify、closeout、execute-plan
 
 ## 当前自用 skill
 
@@ -60,7 +60,7 @@ bash ~/.agents/skills/sdd/scripts/install-sdd-subagents.sh all --scope project -
 如果已安装配套 subagents，`sdd` 在适合的阶段会显式派发：
 
 - `sdd_explorer` / `sdd-explorer`：只读探索代码库现状
-- `sdd_reviewer` / `sdd-reviewer`：交付前审查
+- `sdd_reviewer` / `sdd-reviewer`：验证阶段审查
 - `sdd_docs_researcher` / `sdd-docs-researcher`：查官方文档和版本行为
 
 subagent 安装带有版本控制：安装脚本会比较源版本与已安装版本，拒绝降级（除非 `--force`），并写入 `.sdd-agents-manifest` 供自检使用。`sdd` 激活时会自动检测 manifest，若发现版本过旧或缺失会提示更新命令，但不阻塞流程。
@@ -69,9 +69,22 @@ subagent 安装带有版本控制：安装脚本会比较源版本与已安装�
 
 - 需求模糊时先 `ideate`
 - 需求清晰后写 `spec`
-- 再进入 `clarify`、`plan`、`tasks`
+- 已有 spec 但术语、边界或历史决策未对齐时进入 `clarify`
+- 再进入 `plan`、`tasks`
 - 实现阶段通过 `execute-plan` 控节奏，再进入 `implement`
-- 收尾时进入 `code-review`
+- 实现完成后进入 `verify`
+- 验证通过后进入 `closeout`
+
+主链语义是：
+
+- `Clarify / Domain Alignment`
+- `Spec`
+- `Plan`
+- `Execute`
+- `Verify`
+- `Closeout`
+
+其中 `tasks`、`execute-plan`、`implement` 是 `Execute` 阶段的执行支撑资产，`code-review` 是 `Verify` 内的一个检查动作，而不是顶层终点阶段。
 
 `sdd` 只负责软件交付 workflow 本身，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill.
 
@@ -103,6 +116,12 @@ bash ./scripts/check-installed-skill.sh <skill-name>
 bash ~/.agents/skills/sdd/scripts/check-installed-sdd-subagents.sh all
 ```
 
+验证 `sdd` 主链结构：
+
+```bash
+bash skills/sdd/scripts/validate-sdd.sh
+```
+
 ## 仓库结构
 
 ```text
@@ -126,7 +145,7 @@ skills/
 
 - `skills/<name>/` 是 skill 源码目录
 - `skills/sdd/agents/` 存放 Codex / Claude Code subagent 源定义
-- `skills/sdd/scripts/` 存放 subagent 安装和校验脚本
+- `skills/sdd/scripts/` 存放 subagent 安装、结构校验和辅助脚本
 - `skills/sdd/references/stages/` 存放 `sdd` 的阶段方法论
 - `skills/sdd/templates/` 存放写入 `specs/<feature>/` 的模板
 - `docs/` 存放仓库治理、维护边界和纳入策略
