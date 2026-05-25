@@ -23,14 +23,16 @@ template: ../../templates/tasks-template.md
 - 每个任务都必须能执行，而不是空标题
 - 任务必须按依赖顺序组织
 - 任务要能映射回需求、场景或验收点
+- 当 plan 中存在架构决策或质量属性时，相关任务应能映射回对应决策、质量属性或验证点
 - 覆盖实现任务、验证任务和必要收尾任务
 
 ## 执行步骤
 
 1. 读取 `spec.md`、`plan.md`，按需读取 `data-model.md`
 2. 提取用户场景、验收点、关键改动面与风险
-3. 确认当前方案足以落成任务
-4. 读取 `templates/tasks-template.md` 生成 `tasks.md`
+3. 提取 plan 中的关键架构决策、质量属性目标和 architecture drift 风险
+4. 确认当前方案足以落成任务
+5. 读取 `templates/tasks-template.md` 生成 `tasks.md`
 
 ## 回退条件
 
@@ -47,4 +49,5 @@ template: ../../templates/tasks-template.md
 
 - `tasks.md` 中每个任务都具备边界和验证方式
 - 已说明任务依赖顺序与关键路径
+- 关键架构决策、质量属性或 drift 风险已有对应实现或验证任务
 - 已能判断应直接 `implement` 还是先 `execute-plan`

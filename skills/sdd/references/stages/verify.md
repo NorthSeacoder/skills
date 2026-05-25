@@ -16,6 +16,7 @@ source: sdd custom stage
 
 - 收集并评估 fresh evidence
 - 完成 review、测试和必要的 runtime/browser 检查
+- 检查实现是否偏离 plan 中的架构边界、质量属性和关键 ADR
 - 给出明确 Verdict
 - 决定是返回 `implement`，还是进入 `closeout`
 
@@ -25,21 +26,24 @@ source: sdd custom stage
 - 先看行为和风险，再看表达是否漂亮
 - `code-review` 是 `Verify` 的一个检查动作，不是整个阶段本身
 - 验证结论必须能支持下一步是否进入 `Closeout`
+- 若实现暴露 plan 假设错误，应返回 `plan` 或 `clarify`，而不是只在实现层补丁
 
 ## 执行步骤
 
 1. 汇总当前实现范围、局部验证结果和剩余风险
 2. 执行或检查代码审查结论
-3. 检查测试、runtime 或 browser 级证据
-4. 判断证据是否足以支持完成判定
-5. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
-6. 若通过，进入 `closeout`
+3. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
+4. 检查测试、runtime 或 browser 级证据
+5. 判断证据是否足以支持完成判定
+6. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
+7. 若通过，进入 `closeout`
 
 ## 回退条件
 
 - 若缺少 fresh evidence，返回 `implement`
 - 若 review 或测试发现阻塞性问题，返回 `implement`
 - 若验证中发现当前 plan 假设与实现不符，返回 `plan` 或 `clarify`
+- 若新增关键架构决策但未记录，返回 `plan` 补充轻量 ADR
 
 ## 下一步
 
@@ -59,5 +63,6 @@ source: sdd custom stage
 
 - 已形成明确的 fresh evidence 集合
 - 已说明 review、测试和 runtime/browser 检查的状态
+- 已说明架构漂移检查状态；若不适用，也说明原因
 - 已输出可支撑下一步的 Verdict
 - 若通过，已能解释为什么可以进入 `closeout`

@@ -72,16 +72,24 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 
 进入阶段路由之前，先执行一次 subagent 可用性检查：
 
-1. 检测当前运行环境的 agents 目录下是否存在 `.sdd-agents-manifest`
+1. **优先尝试直接读取 manifest 文件**（LM 层面的文件读取）：
    - Claude Code: `~/.claude/agents/.sdd-agents-manifest`（user scope）或 `.claude/agents/.sdd-agents-manifest`（project scope）
    - Codex: `~/.codex/agents/.sdd-agents-manifest`（user scope）或 `.codex/agents/.sdd-agents-manifest`（project scope）
-2. 若 manifest 存在，对比其中各 agent 版本与 skill 包内 `agents/source/*.yaml` 的 version 字段
-3. 根据对比结果：
+2. **若直接读取失败**（权限不足、沙箱限制、路径不可达），**fallback 到 shell 执行**：
+   ```bash
+   bash <skill-path>/scripts/check-installed-sdd-subagents.sh <platform> --scope user
+   ```
+   其中 `<platform>` 为 `codex` 或 `claude-code`，`<skill-path>` 为本 skill 的实际路径。
+   脚本退出码 0 表示全部可用，非 0 表示存在问题；stdout 包含逐 agent 状态。
+3. 若 manifest 读取成功，对比其中各 agent 版本与 skill 包内 `agents/source/*.yaml` 的 version 字段。
+4. 根据对比结果：
    - 全部匹配或 ahead：正常进入阶段路由，subagent 可用
    - 存在 STALE 或 MISSING：提示用户可运行 `bash <skill-path>/scripts/install-sdd-subagents.sh` 更新，但不阻塞流程
-   - manifest 不存在：提示 subagent 未安装，退回单线程模式，不阻塞
+   - manifest 不存在且 shell fallback 也失败：退回单线程模式，不阻塞
 
-此检查是 LM 层面的指令判断，不是 shell 执行。目的是让主线程在派发 subagent 前知道是否可用，避免派发后才发现缺失。
+目的是让主线程在派发 subagent 前知道是否可用，避免派发后才发现缺失。优先用 LM 文件读取（零开销），读不到时用 shell 兜底（兼容沙箱环境）。
+
+`<skill-path>` 的确定方式：脚本通过 `BASH_SOURCE[0]` 自动定位，无需外部传入绝对路径。LM 只需知道本 SKILL.md 所在目录即为 skill 根目录，脚本位于其下 `scripts/` 子目录。若 LM 无法确定路径，可先用 `find ~ -path "*/skills/sdd/scripts/check-installed-sdd-subagents.sh" -type f 2>/dev/null | head -1` 定位。
 
 ## 阶段路由
 

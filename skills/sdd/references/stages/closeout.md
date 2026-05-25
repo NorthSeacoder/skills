@@ -15,6 +15,7 @@ source: sdd custom stage
 
 - 执行 closeout checklist
 - 检查旧逻辑退役与后续跟进事项
+- 检查必要的 ADR 保留、架构债记录和演进触发信号
 - 形成最终 completion record
 
 ## 核心原则
@@ -28,6 +29,8 @@ source: sdd custom stage
 - 检查旧逻辑、旧路径、fallback 或临时兼容是否需要退役
 - 检查是否还有未处理的发布、提交、CI 或 follow-through 事项
 - 检查相关文档、阶段说明、模板或 acceptance 记录是否需要更新
+- 检查关键架构决策是否需要保留在 completion record 或后续文档中
+- 检查是否留下架构债、临时兼容、演进触发信号或后续重构观察点
 - 检查是否需要做必要的知识同步或经验沉淀
 
 ## 执行步骤
@@ -52,4 +55,5 @@ source: sdd custom stage
 
 - closeout checklist 已执行
 - 已说明旧逻辑退役、follow-through、文档更新和知识同步状态
+- 已说明 ADR 保留、架构债和演进触发信号状态；不适用时也明确标注
 - 已形成最终 completion record，或明确说明为什么不能宣布完成
