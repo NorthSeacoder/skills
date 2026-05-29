@@ -32,14 +32,16 @@ source: sdd custom stage
 - 检查关键架构决策是否需要保留在 completion record 或后续文档中
 - 检查是否留下架构债、临时兼容、演进触发信号或后续重构观察点
 - 检查是否需要做必要的知识同步或经验沉淀
+- 若 spec.md 中同时命中 `multi-stage-workflow` 和 `user-visible-output`（参考 `../feature-traits.md`），执行 workflow replay 并把输入摘要、最终 payload 摘要、用户可见结果断言写入 acceptance.md
 
 ## 执行步骤
 
 1. 读取 `Verify` 的最终 Verdict 和剩余事项
 2. 按 checklist 逐项检查
 3. 明确哪些项已完成、哪些项刻意延后、哪些项不适用
-4. 更新最终 completion record（必要时写入 `acceptance.md`）
-5. 宣布 feature 完成或指出未完成收尾项
+4. 若 spec.md 中任一强化 trait 命中（参考 `../feature-traits.md`），使用 `../../templates/acceptance-template.md` 写 acceptance.md，包含 Evidence Table 和三维 Verdict（Component / Workflow / User-Visible Outcome）
+5. 更新最终 completion record（必要时写入 `acceptance.md`）
+6. 宣布 feature 完成或指出未完成收尾项
 
 ## 回退条件
 

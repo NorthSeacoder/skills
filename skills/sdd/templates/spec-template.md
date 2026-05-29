@@ -9,6 +9,22 @@
 
 ---
 
+## Feature Traits *(LM 自动检测，用户可 override)*
+
+> 参考 [`../references/feature-traits.md`](../../skills/sdd/references/feature-traits.md) 中的 trait 定义和触发规则。命中的 trait 将决定下游阶段是否启用对应的强化规则。
+
+| Trait | 是否命中 | 依据 |
+|---|---|---|
+| `multi-stage-workflow` | ✅ / ❌ | [信号或为什么不命中] |
+| `external-side-effects` | ✅ / ❌ | [信号或为什么不命中] |
+| `artifact-handoff` | ✅ / ❌ | [信号或为什么不命中] |
+| `user-visible-output` | ✅ / ❌ | [信号或为什么不命中] |
+| `prior-closure-failure` | ✅ / ❌ | [信号或为什么不命中] |
+
+**结论**: [若任一 trait 命中，列出本 feature 适用的强化规则；若全 ❌，说明本 feature 按基础流程推进]
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - [标题] (Priority: P1)

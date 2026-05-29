@@ -56,7 +56,8 @@ data_model_template: ../../templates/data-model-template.md
 6. 记录关键架构决策的背景、候选、结论、影响、代价和来源
 7. 明确执行治理与验证路径
 8. 读取 `templates/plan-template.md` 生成 `plan.md`
-9. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
+9. 若 spec.md 中 `multi-stage-workflow` 或 `artifact-handoff` 命中（参考 `../feature-traits.md`），在 plan.md 写入 `Producer-Consumer Matrix`，列出每个跨阶段 artifact 的 Producer / Artifact / Consumer / Consumption Proof
+10. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
 
 ## 回退条件
 
@@ -83,6 +84,7 @@ data_model_template: ../../templates/data-model-template.md
 - `plan.md` 已说明主要模块边界、关键决策、风险、执行治理和验证路径
 - 若经过候选方案讨论，ADR 已记录用户选择的方案以及被放弃的方案和原因
 - 若跳过候选方案讨论，已在 plan.md 中简短说明跳过原因
+- 若 spec 中触发 matrix 的 trait 命中，plan.md 已包含 Producer-Consumer Matrix 且无未说明的孤儿 artifact
 - 若引用成熟架构模式，已说明它只是参考，并完成 MVP / 成长期 / 成熟期适配检查
 - 关键架构决策已记录来源；无法验证的来源标为 `UNVERIFIED`
 - 已判断是否需要 `data-model.md`

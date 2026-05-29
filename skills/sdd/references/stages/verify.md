@@ -34,9 +34,10 @@ source: sdd custom stage
 2. 执行或检查代码审查结论
 3. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
 4. 检查测试、runtime 或 browser 级证据
-5. 判断证据是否足以支持完成判定
-6. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
-7. 若通过，进入 `closeout`
+5. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
+6. 判断证据是否足以支持完成判定
+7. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
+8. 若通过，进入 `closeout`
 
 ## 回退条件
 
@@ -64,5 +65,6 @@ source: sdd custom stage
 - 已形成明确的 fresh evidence 集合
 - 已说明 review、测试和 runtime/browser 检查的状态
 - 已说明架构漂移检查状态；若不适用，也说明原因
+- 若触发 evidence gate 的 trait 命中，Evidence Table 已存在且每条 P0/P1 requirement 都有判定
 - 已输出可支撑下一步的 Verdict
 - 若通过，已能解释为什么可以进入 `closeout`

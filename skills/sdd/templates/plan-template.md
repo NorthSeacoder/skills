@@ -34,6 +34,19 @@
 
 ---
 
+## Producer-Consumer Matrix *(if `multi-stage-workflow` or `artifact-handoff`)*
+
+> 当 spec.md 中对应 trait 命中时必填。详见 [`../references/feature-traits.md`](../references/feature-traits.md)。
+> 列出每个跨阶段 artifact 的生产者、消费者和消费证据，用于在设计阶段识别"产物没有消费者"的闭环断点。
+
+| Producer | Artifact | Consumer | Consumption Proof |
+|---|---|---|---|
+| [生产模块/阶段] | [产物名称] | [消费模块/阶段] | [如何验证消费已发生] |
+
+**孤儿 artifact 处理**: 若某 artifact 找不到 consumer，必须显式说明它是"预留中间能力"还是"待补消费方"，不得默认通过。
+
+---
+
 ## Quality Attribute Targets *(if applicable)*
 
 | 属性 | 目标 | 设计影响 | 验证方式 |

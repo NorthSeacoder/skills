@@ -34,7 +34,8 @@ checklist: ../../templates/checklist-template.md
 2. 创建或确认 `specs/<feature>/`
 3. 做范围级只读探索
 4. 读取 `templates/spec-template.md` 生成 `spec.md`
-5. 需要时配合 `templates/checklist-template.md` 做规格质量检查
+5. 检测 feature traits 并写入 spec.md 的 `Feature Traits` 段（参考 `../feature-traits.md`，逐 trait 给出命中标记和依据）
+6. 需要时配合 `templates/checklist-template.md` 做规格质量检查
 
 ## 回退条件
 
@@ -58,4 +59,5 @@ checklist: ../../templates/checklist-template.md
 
 - `spec.md` 已写入 `specs/<feature>/`
 - `specs/.active` 已指向当前 feature
+- `Feature Traits` 段已写入 spec.md（即使全部为 ❌ 也需显式标记，并给出"按基础流程推进"的结论）
 - spec 足以支撑 `clarify` 或 `plan`，而不是只有标题和空框架

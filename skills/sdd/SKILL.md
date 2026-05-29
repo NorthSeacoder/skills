@@ -171,10 +171,16 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 - `templates/plan-template.md`
 - `templates/data-model-template.md`
 - `templates/tasks-template.md`
+- `templates/acceptance-template.md`（按需，trait 命中时使用）
 
 阶段细则统一位于：
 
 - `references/stages/*.md`
+
+跨阶段共享 reference：
+
+- `references/architecture-quality-gate.md`
+- `references/feature-traits.md`（trait 定义、触发规则、跳过条件）
 
 ## 输出要求
 
