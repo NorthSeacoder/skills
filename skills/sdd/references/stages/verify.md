@@ -15,6 +15,7 @@ source: sdd custom stage
 ## 目标
 
 - 收集并评估 fresh evidence
+- 形成可被 `closeout` 消费的 evidence package
 - 完成 review、测试和必要的 runtime/browser 检查
 - 检查实现是否偏离 plan 中的架构边界、质量属性和关键 ADR
 - 给出明确 Verdict
@@ -27,6 +28,22 @@ source: sdd custom stage
 - `code-review` 是 `Verify` 的一个检查动作，不是整个阶段本身
 - 验证结论必须能支持下一步是否进入 `Closeout`
 - 若实现暴露 plan 假设错误，应返回 `plan` 或 `clarify`，而不是只在实现层补丁
+- `Verify` 负责证据和 verdict，不负责最终 completion record；持久记录由 `Closeout` 写入 `acceptance.md`
+
+## Evidence Package
+
+进入 `closeout` 前，verify 输出必须足以被消费，不应只写“测试通过”。
+
+最小 evidence package 包含：
+
+- **实现范围**：本轮涉及的文件、模块或任务编号
+- **验证命令 / 检查动作**：测试名、命令、review、runtime/browser 检查或人工验证
+- **Evidence Table draft**：当 `user-visible-output` 或 `external-side-effects` 命中时，覆盖每条 P0/P1 requirement
+- **Architecture drift 检查**：是否偏离 plan 中模块边界、数据流、ADR 或质量属性；不适用时说明原因
+- **Unresolved risks**：剩余风险、证据缺口和是否影响进入 closeout
+- **Verdict**：`PASS` / `CONDITIONAL PASS` / `FAIL`
+
+Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘要、fixture 或人工验证记录。不得只写“已实现”“测试通过”“review 通过”。
 
 ## 执行步骤
 
@@ -34,7 +51,7 @@ source: sdd custom stage
 2. 执行或检查代码审查结论
 3. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
 4. 检查测试、runtime 或 browser 级证据
-5. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
+5. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table draft 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
 6. 判断证据是否足以支持完成判定
 7. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
 8. 若通过，进入 `closeout`
@@ -62,7 +79,7 @@ source: sdd custom stage
 
 ## 阶段完成标准
 
-- 已形成明确的 fresh evidence 集合
+- 已形成明确的 fresh evidence 集合和 closeout 可消费的 evidence package
 - 已说明 review、测试和 runtime/browser 检查的状态
 - 已说明架构漂移检查状态；若不适用，也说明原因
 - 若触发 evidence gate 的 trait 命中，Evidence Table 已存在且每条 P0/P1 requirement 都有判定

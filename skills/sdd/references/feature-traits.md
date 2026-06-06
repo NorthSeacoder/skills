@@ -20,13 +20,17 @@ Feature Traits 是一组布尔标签，用于在 specify 阶段标注 feature �
 | `user-visible-output` OR `external-side-effects` | Evidence Gate | verify |
 | `multi-stage-workflow` AND `user-visible-output` | Workflow Replay | closeout |
 | 任一 trait 命中 | 三维 Verdict（Component / Workflow / User-Visible Outcome） | closeout / acceptance |
+| 任一 trait 命中 | 默认生成或更新 `acceptance.md`，作为持久 completion record | closeout |
 
 ## 跳过条件
 
 强化规则默认开启。以下情况可跳过，但必须在对应产物中记录跳过原因：
 
-- spec.md 中 Feature Traits 段所有 trait 均标记为 ❌ → 后续阶段按基础流程推进，无需生成强化段落
+- spec.md 中 Feature Traits 段所有 trait 均标记为 ❌ → 后续阶段按基础流程推进，无需生成强化段落，也无需生成完整 `acceptance.md`
 - 用户显式 override 某个 trait 为 ❌ 并给出理由 → 下游阶段以用户标注为准
-- 极小改动（文案修改、配置调整、单点 bugfix）→ 不强制走 traits 检测，但若已有 spec.md 则仍建议填写
+- 用户显式选择轻量路径 → 可跳过完整 `acceptance.md`，但 closeout 必须用中文记录跳过原因
+- 极小改动（文案修改、配置调整、单点 bugfix）→ 不强制走 traits 检测，也不强制生成完整 `acceptance.md`；但若已有 spec.md 则仍建议填写 traits
 
 跳过时的记录格式：在对应段落位置写一行 `> 跳过：[原因]`，不留空白段落。
+
+若任一 trait 命中且未被用户显式跳过，closeout 应使用 `templates/acceptance-template.md` 生成或更新 `specs/<feature>/acceptance.md`。最终对话回复只摘要验收文件路径、verdict、阻塞项和下一步，不替代持久记录。

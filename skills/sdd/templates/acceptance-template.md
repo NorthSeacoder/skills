@@ -3,7 +3,15 @@
 **Workspace**: `[工作区名称]` | **Date**: [日期] | **Spec**: [spec.md](spec.md)
 
 > 当任一 Feature Trait 命中时使用本模板。详见 [`../references/feature-traits.md`](../references/feature-traits.md)。
-> 不命中任何 trait 的 feature 可省略本文件，直接在 closeout 中给出简短结论。
+> 不命中任何 trait，或用户显式选择轻量路径时，可省略本文件，但必须在 closeout 中用中文记录跳过原因。
+> 本文件是持久 completion record；closeout 对话回复只摘要路径、verdict、阻塞项和下一步。
+
+## 写作规则
+
+- 使用简体中文；必要英文术语仅用于保持 SDD 阶段语义。
+- 短句优先。每个结论都必须对应状态、证据或下一步。
+- 不得只写“已实现”“测试通过”“review 通过”“已完成”等不可定位结论。
+- PARTIAL、FAIL、阻塞、延后项必须说明缺口或恢复条件。
 
 ---
 
@@ -47,3 +55,29 @@
 - **最终 payload 摘要**: [捕获到的端到端结果]
 - **用户可见结果断言**: [对照 spec 中 user-visible-output 的期望]
 - **Replay 类型**: 真实 / fixture（fixture 时说明无法做真实 replay 的原因）
+
+---
+
+## Closeout Checklist
+
+> 每一项必须写状态和依据。可用状态：已完成 / 延后 / 不适用 / 阻塞。
+> 出现“阻塞”时，Overall 不得为 PASS，也不得宣布 feature 完成。
+
+| Item | Status | Evidence / Rationale | Next Step |
+|---|---|---|---|
+| 旧逻辑、旧路径、fallback 或临时兼容退役 | 已完成 / 延后 / 不适用 / 阻塞 | [具体文件、diff 摘要、保留原因或不适用依据] | [无 / 后续触发条件 / 回退阶段] |
+| 发布、提交、CI 或 follow-through | 已完成 / 延后 / 不适用 / 阻塞 | [commit / CI / 发布状态 / 不适用依据] | [无 / 待执行动作] |
+| 文档、阶段说明、模板或验收记录更新 | 已完成 / 延后 / 不适用 / 阻塞 | [文件路径或不适用依据] | [无 / 待更新位置] |
+| ADR、架构债或演进触发信号 | 已完成 / 延后 / 不适用 / 阻塞 | [保留的决策、债务、阈值或不适用依据] | [无 / 观察条件] |
+| 知识同步或经验沉淀 | 已完成 / 延后 / 不适用 / 阻塞 | [同步目标、状态或不适用依据] | [无 / 恢复条件] |
+
+---
+
+## Completion Record
+
+- **最终结论**: PASS / CONDITIONAL PASS / FAIL
+- **完成依据**: [引用 Evidence Table、Verdict Summary、Workflow Replay 或 Closeout Checklist 中的具体证据]
+- **阻塞项**: [无 / 阻塞项列表；有阻塞项时不得宣布完成]
+- **延后项**: [无 / 延后项及触发条件]
+- **退役结论**: [旧逻辑已退役 / 保留及原因 / 不适用]
+- **后续动作**: [无 / 下一阶段 / 后续 feature / roadmap closeout]
