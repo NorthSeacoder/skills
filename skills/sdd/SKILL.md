@@ -34,6 +34,7 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 - `specs/<feature>/tasks.md`：核心必备，定义可执行任务、依赖顺序与验证点
 - `specs/<feature>/data-model.md`：按需，仅在实体、状态、关系或存储变化需要单独展开时创建
 - `specs/<feature>/acceptance.md`：按需，通常在实现完成后用于记录最终验收结论
+- `specs/<umbrella>/roadmap.md`：按需，仅当一个用户需求适合拆成多个可独立交付的 feature 时创建，记录整体目标、feature 列表、依赖、状态、当前 feature 和下一步推荐
 
 当前 active feature 记录在：
 
@@ -45,6 +46,7 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 - 当用户没有显式指定 feature 时，优先据此恢复上下文
 - 若它指向的产物不存在、与用户当前目标明显不符，或发现内容失配，应显式说明失配并回退到“重新确认 feature / 上游阶段 / 更新 `.active`”之一
 - 在新建 `spec.md` 或显式切换 feature 后，应同步更新 `specs/.active`
+- 如果当前 feature 属于某个 `roadmap.md`，`specs/.active` 必须与 roadmap 的 `Current Feature` 一致；若不一致，应先说明失配并修正 `.active` 或 roadmap，不得静默继续下游阶段
 
 ## Subagent 约定
 
@@ -92,6 +94,12 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 `<skill-path>` 的确定方式：脚本通过 `BASH_SOURCE[0]` 自动定位，无需外部传入绝对路径。LM 只需知道本 SKILL.md 所在目录即为 skill 根目录，脚本位于其下 `scripts/` 子目录。若 LM 无法确定路径，可先用 `find ~ -path "*/skills/sdd/scripts/check-installed-sdd-subagents.sh" -type f 2>/dev/null | head -1` 定位。
 
 ## 阶段路由
+
+进入阶段路由前，先判断当前用户需求是否明显适合拆成多个 feature：
+
+- 如果需求包含多个可独立验收的能力、跨阶段路线、"先做 A 后做 B"、完成后还要推荐后续工作，先进入 `ideate` 或 `specify` 前的拆分评估，列出候选 feature、依赖、推荐首项和后续 feature。
+- 如果用户明确说"只评估，不写文件"，只输出拆分评估和推荐路线，不创建 `spec.md` 或 `roadmap.md`。
+- 如果需求只是极小改动、低风险单点修复或单个清晰 feature，不创建 roadmap，按基础 SDD 或普通实现流程推进。
 
 根据当前输入判断进入哪一阶段：
 
@@ -154,13 +162,20 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 ## 路由原则
 
 - 先判断用户当前所处阶段，再进入对应材料
+- 先判断一个用户需求是否需要拆成多个 feature；需要拆分时，先建立或更新 roadmap，再把首个 feature 切入标准阶段链
 - 不要要求用户记住旧子 skill 名称
 - 每一阶段结束时，都要明确下一步推荐
+- 如果当前 feature 属于 roadmap，每一阶段结束时还要说明当前 feature、roadmap 当前状态，以及是否影响后续 feature
 - 如果发现上游产物不足，应返回上游阶段，而不是硬推进
 - 没有 fresh evidence，不应宣布 feature 已完成
 - `Closeout` 必须检查旧逻辑退役、发布跟进和文档/知识同步，而不是礼貌性收尾
+- `Closeout` 完成后若当前 feature 属于 roadmap，必须回写 roadmap 状态并推荐下一个 feature；若没有可推荐项，建议做 roadmap closeout
+- `Closeout` 可以生成 commit plan，但任何 `git add` / `git commit` 副作用必须等待用户明确确认；不得自动 `git push`
+- commit plan 只能包含当前 feature 相关 diff；不确定归属的文件必须列为 needs user decision，不得自动提交
+- SDD 可使用 `context-manifest.md` 记录 implement / check / research 上下文；manifest 只吸收 Trellis 上下文清单思想，不引入 `.trellis/`、Trellis CLI、hook 或自动注入
 - `sdd` 只负责软件交付流程，不负责统一路由 `debug`、`git-guard`、`knowledge-management` 等其他 skill
 - 对明显不适合走完整 SDD 流程的小改动，应明确说明不进入完整工作区流程，而不是勉强套阶段
+- 中文验收强化、自动提交相关 diff、Trellis 风格 implement/check context manifest 都应作为后续 feature 进入 roadmap，不应混入当前 feature 的完成条件，除非当前 feature 的 spec 明确要求
 
 ## 模板与资产
 
@@ -172,6 +187,9 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 - `templates/data-model-template.md`
 - `templates/tasks-template.md`
 - `templates/acceptance-template.md`（按需，trait 命中时使用）
+- `templates/roadmap-template.md`（按需，多 feature 需求命中时使用）
+- `templates/commit-plan-template.md`（按需，需要提交相关 diff 时使用）
+- `templates/context-manifest-template.md`（按需，多阶段、研究或验证上下文需要落盘时使用）
 
 阶段细则统一位于：
 
@@ -195,3 +213,9 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 
 5. 为什么需要回退或切换
 6. 建议回到哪个阶段或更新哪个工作区文件
+
+如果当前 feature 属于 roadmap，还必须补充：
+
+7. 当前 roadmap 的 current feature 与 `specs/.active` 是否一致
+8. 当前阶段结束后是否需要更新 roadmap
+9. 若 feature 已 closeout，推荐的下一个 feature 和推荐依据

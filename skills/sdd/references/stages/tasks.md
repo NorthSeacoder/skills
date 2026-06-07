@@ -15,6 +15,7 @@ template: ../../templates/tasks-template.md
 ## 产物
 
 - `specs/<feature>/tasks.md`
+- 按需：`specs/<feature>/context-manifest.md`（命中 Feature Traits、多阶段任务、研究/验证上下文容易丢失时）
 
 `tasks.md` 是进入 `execute-plan` 或 `implement` 的核心上游产物；没有它时，不应直接把 plan 当任务执行。
 
@@ -25,6 +26,7 @@ template: ../../templates/tasks-template.md
 - 任务要能映射回需求、场景或验收点
 - 当 plan 中存在架构决策或质量属性时，相关任务应能映射回对应决策、质量属性或验证点
 - 覆盖实现任务、验证任务和必要收尾任务
+- 命中 Feature Traits 或多阶段 feature 时，应显式生成或更新 context manifest；小改动可跳过，但必须记录原因
 
 ## 执行步骤
 
@@ -33,12 +35,15 @@ template: ../../templates/tasks-template.md
 3. 提取 plan 中的关键架构决策、质量属性目标和 architecture drift 风险
 4. 确认当前方案足以落成任务
 5. 读取 `templates/tasks-template.md` 生成 `tasks.md`
+6. 若当前 feature 命中任一 Feature Trait、存在研究材料、或实现/验证上下文容易跨会话丢失，读取 `templates/context-manifest-template.md` 生成或更新 `context-manifest.md`
+7. `context-manifest.md` 至少应包含 Implement Context 和 Check Context；有外部 docs、本地研究或参考仓分析时补 Research Context
 
 ## 回退条件
 
 - 若 `plan.md` 不存在，返回 `plan`
 - 若 `spec.md` 不存在，返回 `specify`
 - 若方案仍不足以拆成明确任务，返回 `plan` 补强，而不是写空任务标题
+- 若命中 trait 但无法判断 implement/check 应读取哪些上下文，返回 `plan` 补强，不写空 manifest
 
 ## 下一步
 
@@ -50,4 +55,5 @@ template: ../../templates/tasks-template.md
 - `tasks.md` 中每个任务都具备边界和验证方式
 - 已说明任务依赖顺序与关键路径
 - 关键架构决策、质量属性或 drift 风险已有对应实现或验证任务
+- 已说明是否生成 `context-manifest.md`；若生成，条目都有 reason；若跳过，已记录跳过原因
 - 已能判断应直接 `implement` 还是先 `execute-plan`

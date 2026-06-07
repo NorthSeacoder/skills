@@ -73,6 +73,21 @@
 
 ---
 
+## Commit Result *(if commit planning ran)*
+
+| Field | Value |
+|---|---|
+| Status | committed / not_submitted / no_related_diff / failed |
+| Commit Hashes | [hash 列表，未提交时写无] |
+| Commit Messages | [message 列表，未提交时写无] |
+| Included Files | [已提交文件摘要，未提交时写无] |
+| Excluded / Remaining Files | [未提交或剩余 dirty files 摘要] |
+| Reason | [未提交、无需提交或失败原因] |
+
+> 记录原则：提交前必须有 commit plan 和用户确认。不得把 `git add -A`、自动 push 或未确认提交作为完成依据。
+
+---
+
 ## Completion Record
 
 - **最终结论**: PASS / CONDITIONAL PASS / FAIL
@@ -80,4 +95,5 @@
 - **阻塞项**: [无 / 阻塞项列表；有阻塞项时不得宣布完成]
 - **延后项**: [无 / 延后项及触发条件]
 - **退役结论**: [旧逻辑已退役 / 保留及原因 / 不适用]
+- **提交结论**: [committed / not_submitted / no_related_diff / failed；如 committed，写 commit hash]
 - **后续动作**: [无 / 下一阶段 / 后续 feature / roadmap closeout]

@@ -24,6 +24,7 @@ source: sdd custom stage
 ## 核心原则
 
 - 没有 fresh evidence，不应宣布完成
+- 若存在 `context-manifest.md`，先读取 Check Context；命中 trait 但 check context 缺失或无法覆盖 P0/P1 requirement，不得判 PASS
 - 先看行为和风险，再看表达是否漂亮
 - `code-review` 是 `Verify` 的一个检查动作，不是整个阶段本身
 - 验证结论必须能支持下一步是否进入 `Closeout`
@@ -39,6 +40,7 @@ source: sdd custom stage
 - **实现范围**：本轮涉及的文件、模块或任务编号
 - **验证命令 / 检查动作**：测试名、命令、review、runtime/browser 检查或人工验证
 - **Evidence Table draft**：当 `user-visible-output` 或 `external-side-effects` 命中时，覆盖每条 P0/P1 requirement
+- **Context manifest coverage**：若存在 `context-manifest.md`，说明 Check Context 是否覆盖 spec、plan、tasks、风险和 P0/P1 requirement；不适用时说明跳过原因
 - **Architecture drift 检查**：是否偏离 plan 中模块边界、数据流、ADR 或质量属性；不适用时说明原因
 - **Unresolved risks**：剩余风险、证据缺口和是否影响进入 closeout
 - **Verdict**：`PASS` / `CONDITIONAL PASS` / `FAIL`
@@ -48,17 +50,19 @@ Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘
 ## 执行步骤
 
 1. 汇总当前实现范围、局部验证结果和剩余风险
-2. 执行或检查代码审查结论
-3. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
-4. 检查测试、runtime 或 browser 级证据
-5. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table draft 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
-6. 判断证据是否足以支持完成判定
-7. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
-8. 若通过，进入 `closeout`
+2. 若存在 `context-manifest.md`，读取 Check Context 并检查条目 reason、Required 文件和 P0/P1 requirement 覆盖；覆盖不足时回退到 `plan` 或 `tasks`
+3. 执行或检查代码审查结论
+4. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
+5. 检查测试、runtime 或 browser 级证据
+6. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table draft 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
+7. 判断证据是否足以支持完成判定
+8. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
+9. 若通过，进入 `closeout`
 
 ## 回退条件
 
 - 若缺少 fresh evidence，返回 `implement`
+- 若 Check Context 缺失、manifest 条目缺少 reason、Required 文件不存在，或 check context 不能覆盖 P0/P1 requirement，返回 `tasks` 或 `plan`
 - 若 review 或测试发现阻塞性问题，返回 `implement`
 - 若验证中发现当前 plan 假设与实现不符，返回 `plan` 或 `clarify`
 - 若新增关键架构决策但未记录，返回 `plan` 补充轻量 ADR
@@ -81,6 +85,7 @@ Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘
 
 - 已形成明确的 fresh evidence 集合和 closeout 可消费的 evidence package
 - 已说明 review、测试和 runtime/browser 检查的状态
+- 若存在 `context-manifest.md`，已说明 Check Context 覆盖状态；若跳过，已说明原因
 - 已说明架构漂移检查状态；若不适用，也说明原因
 - 若触发 evidence gate 的 trait 命中，Evidence Table 已存在且每条 P0/P1 requirement 都有判定
 - 已输出可支撑下一步的 Verdict
