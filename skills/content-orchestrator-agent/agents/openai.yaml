@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Orchestrator Agent"
+  short_description: "调用本地公众号内容生产编排命令行工作流 agent。"
+  default_prompt: "使用 Content Orchestrator Agent 为配置好的公众号账号生成、发布或管理选题。"

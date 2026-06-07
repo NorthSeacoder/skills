@@ -37,6 +37,9 @@ require_grep '^## 当前自用 skill$' "README.md"
 require_grep '^\- `knowledge-management`$' "README.md"
 require_grep '^\- `debug`$' "README.md"
 require_grep '^\- `git-guard`$' "README.md"
+require_grep '^\- `content-orchestrator-agent`$' "README.md"
+require_file "skills/content-orchestrator-agent/SKILL.md"
+require_file "skills/content-orchestrator-agent/agents/openai.yaml"
 
 echo "Verifying SDD stage assets..."
 for path in \

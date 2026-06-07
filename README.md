@@ -21,6 +21,7 @@
 - `knowledge-management`
 - `debug`
 - `git-guard`
+- `content-orchestrator-agent`
 
 ## 安装
 
