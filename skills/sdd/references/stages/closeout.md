@@ -4,7 +4,7 @@ source: sdd custom stage
 
 # Closeout Stage
 
-在验证通过后做最后收尾，确保旧逻辑退役、发布跟进、文档更新和必要知识同步真正完成，而不是把“验证通过”直接当成“整个 feature 结束”。
+在验证通过后做最后收尾，确保旧逻辑退役、发布跟进、文档更新和 Knowledge Capture Gate 真正完成，而不是把“验证通过”直接当成“整个 feature 结束”。
 
 ## 何时进入
 
@@ -25,7 +25,8 @@ source: sdd custom stage
 
 - `Closeout` 不是礼貌性收尾，而是最后一道 workflow gate
 - 没做退役检查，不应默认旧逻辑可以继续留在主链
-- 文档和知识同步只做必要同步，不引入重流程
+- Knowledge Capture 默认只写入本地 `acceptance.md`；不得自动调用外部知识库、hook、提交或同步 API
+- 外部同步若由环境级规则另行完成，只记录 sync status；`sdd` 不拥有默认外部副作用
 - `acceptance.md` 是命中 trait 时的持久 completion record；最终对话回复只摘要路径、verdict、阻塞项和下一步
 - 中文记录必须短、准、可审计。每个结论都对应状态、证据或下一步，不写空泛段末总结句
 - commit 是外部副作用。必须先展示 commit plan，再等待用户明确确认；未确认不得执行 `git add` 或 `git commit`
@@ -40,11 +41,38 @@ source: sdd custom stage
 - 检查相关文档、阶段说明、模板或 acceptance 记录是否需要更新
 - 检查关键架构决策是否需要保留在 completion record 或后续文档中
 - 检查是否留下架构债、临时兼容、演进触发信号或后续重构观察点
-- 检查是否需要做必要的知识同步或经验沉淀
+- 执行 Knowledge Capture Gate：识别 durable knowledge、证据来源、适用范围、redaction 需求、sync status 和后续动作
 - 检查当前 feature 是否属于 `specs/<umbrella>/roadmap.md`；若属于，检查 roadmap 的 `Current Feature` 与 `specs/.active` 是否一致
 - 若 spec.md 中同时命中 `multi-stage-workflow` 和 `user-visible-output`（参考 `../feature-traits.md`），执行 workflow replay 并把输入摘要、最终 payload 摘要、用户可见结果断言写入 acceptance.md
 
 每个 checklist 项必须标注状态：`已完成` / `延后` / `不适用` / `阻塞`。每项都必须给出一句证据或依据；出现 `阻塞` 时不得宣布 feature 完成。
+
+## Knowledge Capture Gate
+
+Closeout 必须判断当前 feature 是否产生可复用知识，并把结果写入 `acceptance.md` 的 `## Knowledge Capture` 段。
+
+允许的 Type 只能是：
+
+- `decision`
+- `convention`
+- `pattern`
+- `anti-pattern`
+- `gotcha`
+- `common-mistake`
+- `follow-up`
+- `none`
+
+每条非 `none` 知识必须包含短标题、1-3 句摘要、证据来源、适用范围、Sync Status 和 Follow-up。没有可沉淀知识时必须写 `none` 和一句跳过原因，不得留空或泛写“无需同步”。
+
+Sync Status 只能描述状态，不触发动作：
+
+- `recorded-only`: 仅写入本地 `acceptance.md`
+- `synced-by-session-memory`: 已由环境级 memory 规则另行同步
+- `skipped`: 明确跳过，并给出原因
+- `redacted`: 涉及密钥、隐私、客户数据或不可公开上下文，已脱敏或不记录原文
+- `follow-up`: 需要后续人工或可选 lifecycle integration 处理
+
+若知识条目没有明确证据来源，不得作为确定知识写入；只能列为 `follow-up`。涉及密钥、个人隐私、客户数据或不可公开上下文时，必须标记 `redacted` 或 `skipped`。
 
 ## Acceptance Record Rules
 
@@ -73,7 +101,7 @@ source: sdd custom stage
 1. 读取 `Verify` 的 evidence package、最终 Verdict 和剩余事项
 2. 按 checklist 逐项检查
 3. 明确哪些项已完成、哪些项刻意延后、哪些项不适用、哪些项阻塞
-4. 若 spec.md 中任一强化 trait 命中（参考 `../feature-traits.md`），使用 `../../templates/acceptance-template.md` 写 acceptance.md，包含 Evidence Table、三维 Verdict（Component / Workflow / User-Visible Outcome）、必要的 Workflow Replay、Closeout Checklist 和 Completion Record
+4. 若 spec.md 中任一强化 trait 命中（参考 `../feature-traits.md`），使用 `../../templates/acceptance-template.md` 写 acceptance.md，包含 Evidence Table、三维 Verdict（Component / Workflow / User-Visible Outcome）、必要的 Workflow Replay、Closeout Checklist、Knowledge Capture 和 Completion Record
 5. 若未命中 trait 或用户显式选择轻量路径，记录中文跳过原因，并给出简短 closeout 结论
 6. 若当前 feature 属于 roadmap：
    - `PASS` 时将当前 feature 标记为 `done`
@@ -108,7 +136,7 @@ source: sdd custom stage
 ## 阶段完成标准
 
 - closeout checklist 已执行
-- 已说明旧逻辑退役、follow-through、文档更新和知识同步状态
+- 已说明旧逻辑退役、follow-through、文档更新和 Knowledge Capture 状态
 - 已说明 ADR 保留、架构债和演进触发信号状态；不适用时也明确标注
 - 已形成最终 completion record，或明确说明为什么不能宣布完成
 - 若任一 Feature Trait 命中且未选择轻量路径，`acceptance.md` 已写入或更新

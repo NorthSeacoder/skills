@@ -71,10 +71,11 @@ default mode 不得因为当前 feature 仍在 plan / tasks / implement 阶段�
 
 - `tasks.md` 存在且没有 `- [ ]`。
 - `verify-evidence.md` 存在。
-- `acceptance.md` 存在并包含 Evidence Table、Verdict Summary、Closeout Checklist、Completion Record 和 Overall。
+- `acceptance.md` 存在并包含 Evidence Table、Verdict Summary、Closeout Checklist、Knowledge Capture、Completion Record 和 Overall。
+- Knowledge Capture 必须包含 Type、Title、Summary、Evidence、Scope、Sync Status、Follow-up 字段，或明确记录 `none` 和跳过原因。
 
 ## Boundaries
 
 - validator 只检查结构、一致性和可定位失败原因。
-- validator 不判断 evidence 内容是否充分，不替代 verify/reviewer 的语义判断。
+- validator 不判断 evidence 或 Knowledge Capture 内容是否充分，不替代 verify/reviewer 的语义判断。
 - 不引入 `.trellis/`、Trellis CLI、task.py、JSONL task、hook 自动注入、外部同步或自动提交。

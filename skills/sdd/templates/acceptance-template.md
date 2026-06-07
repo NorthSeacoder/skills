@@ -69,7 +69,37 @@
 | 发布、提交、CI 或 follow-through | 已完成 / 延后 / 不适用 / 阻塞 | [commit / CI / 发布状态 / 不适用依据] | [无 / 待执行动作] |
 | 文档、阶段说明、模板或验收记录更新 | 已完成 / 延后 / 不适用 / 阻塞 | [文件路径或不适用依据] | [无 / 待更新位置] |
 | ADR、架构债或演进触发信号 | 已完成 / 延后 / 不适用 / 阻塞 | [保留的决策、债务、阈值或不适用依据] | [无 / 观察条件] |
-| 知识同步或经验沉淀 | 已完成 / 延后 / 不适用 / 阻塞 | [同步目标、状态或不适用依据] | [无 / 恢复条件] |
+| Knowledge Capture | 已完成 / 延后 / 不适用 / 阻塞 | [记录的条目、none 原因、redaction 或同步状态] | [无 / 后续同步或恢复条件] |
+
+---
+
+## Knowledge Capture
+
+> Closeout 必填。默认只记录到本地 `acceptance.md`，不得把外部同步、hook、自动提交或 API 调用作为默认行为。
+> 每条 Summary 控制在 1-3 句，必须有 Evidence。不得粘贴长日志、完整 diff、密钥、隐私、客户数据或不可公开原文。
+
+| Type | Title | Summary | Evidence | Scope | Sync Status | Follow-up |
+|---|---|---|---|---|---|---|
+| decision / convention / pattern / anti-pattern / gotcha / common-mistake / follow-up / none | [短标题] | [1-3 句可复用内容；none 时写跳过原因] | [文件、测试、verify evidence 或 completion record] | [适用范围] | recorded-only / synced-by-session-memory / skipped / redacted / follow-up | [无 / 后续动作] |
+
+**Type 规则**:
+
+- `decision`: 影响后续实现或流程的取舍
+- `convention`: 后续应遵守的约定
+- `pattern`: 可复用做法
+- `anti-pattern`: 明确不应采用的做法
+- `gotcha`: 容易踩坑的边界
+- `common-mistake`: 常见错误和预防方式
+- `follow-up`: 缺证据或需后续处理，暂不作为确定知识
+- `none`: 无可沉淀知识，必须写一句跳过原因
+
+**Sync Status 规则**:
+
+- `recorded-only`: 仅写入本地 acceptance
+- `synced-by-session-memory`: 已由环境级 memory 规则另行同步
+- `skipped`: 明确跳过，并给出原因
+- `redacted`: 已脱敏或因敏感内容不记录原文
+- `follow-up`: 后续人工或可选 lifecycle integration 处理
 
 ---
 

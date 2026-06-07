@@ -172,7 +172,8 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 - 如果当前 feature 属于 roadmap，每一阶段结束时还要说明当前 feature、roadmap 当前状态，以及是否影响后续 feature
 - 如果发现上游产物不足，应返回上游阶段，而不是硬推进
 - 没有 fresh evidence，不应宣布 feature 已完成
-- `Closeout` 必须检查旧逻辑退役、发布跟进和文档/知识同步，而不是礼貌性收尾
+- `Closeout` 必须检查旧逻辑退役、发布跟进、文档更新和 Knowledge Capture Gate，而不是礼貌性收尾
+- Knowledge Capture Gate 默认只写本地 `acceptance.md`，不得自动调用外部知识库、hook、提交或同步 API；外部同步只能记录为状态或由环境级规则另行处理
 - `Closeout` 完成后若当前 feature 属于 roadmap，必须回写 roadmap 状态并推荐下一个 feature；若没有可推荐项，建议做 roadmap closeout
 - `Closeout` 可以生成 commit plan，但任何 `git add` / `git commit` 副作用必须等待用户明确确认；不得自动 `git push`
 - commit plan 只能包含当前 feature 相关 diff；不确定归属的文件必须列为 needs user decision，不得自动提交
