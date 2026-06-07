@@ -55,9 +55,10 @@ Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘
 4. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
 5. 检查测试、runtime 或 browser 级证据
 6. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table draft 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
-7. 判断证据是否足以支持完成判定
-8. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
-9. 若通过，进入 `closeout`
+7. 运行或检查 `bash skills/sdd/scripts/validate-sdd.sh` 的 default mode；若要证明 closeout readiness，可额外运行 `bash skills/sdd/scripts/validate-sdd.sh --closeout-ready`
+8. 判断证据是否足以支持完成判定
+9. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
+10. 若通过，进入 `closeout`
 
 ## 回退条件
 

@@ -2,6 +2,8 @@
 
 当用户表达“继续 / 下一步 / 接着做 / resume / continue”等续接意图时，先执行本 reference 的 preflight，再进入普通阶段路由。目标是恢复正确 feature 和阶段，而不是把续接请求误判为新的 ideate。
 
+完整状态来源、roadmap consistency、manifest 规则和 validator mode 见 [`status-model.md`](status-model.md)。本 reference 负责 LM 续接路由；机器化结构校验由 `scripts/validate-sdd.sh` 执行。
+
 ## 触发信号
 
 命中任一信号时进入 continuation preflight：
@@ -68,4 +70,4 @@
 - 只吸收 Trellis `continue` 式续接路由思想。
 - 不引入 `.trellis/`、Trellis CLI、hook、task.py、JSONL task 或自动 context injection。
 - 不自动提交、不自动 push、不触发外部任务系统同步。
-- 本 reference 定义 LM 续接判断规则；完整机器化状态 validator 属于后续 feature。
+- 本 reference 定义 LM 续接判断规则；完整机器化结构校验见 `status-model.md` 和 `scripts/validate-sdd.sh`。

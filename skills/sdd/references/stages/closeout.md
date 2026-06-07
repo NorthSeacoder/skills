@@ -35,6 +35,7 @@ source: sdd custom stage
 
 - 检查旧逻辑、旧路径、fallback 或临时兼容是否需要退役
 - 检查是否还有未处理的发布、提交、CI 或 follow-through 事项
+- 运行或检查 `bash skills/sdd/scripts/validate-sdd.sh --closeout-ready`，确认 tasks、fresh evidence 和 acceptance completion record 满足收尾门槛
 - 若需要提交，使用 `../../templates/commit-plan-template.md` 生成 commit plan，列出 included files、excluded files、needs user decision、risks 和 commit batches
 - 检查相关文档、阶段说明、模板或 acceptance 记录是否需要更新
 - 检查关键架构决策是否需要保留在 completion record 或后续文档中

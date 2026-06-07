@@ -203,6 +203,7 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 
 - `references/architecture-quality-gate.md`
 - `references/continuation-routing.md`（续接意图、active feature 恢复、状态映射和失配处理）
+- `references/status-model.md`（`.active`、roadmap、manifest、tasks、evidence、acceptance 的状态来源、校验边界和 validator mode）
 - `references/feature-traits.md`（trait 定义、触发规则、跳过条件）
 
 ## 输出要求
