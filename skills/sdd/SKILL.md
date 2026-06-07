@@ -95,6 +95,10 @@ description: 单入口的软件交付工作流 skill。覆盖 ideate、specify�
 
 ## 阶段路由
 
+如果用户表达“继续 / 下一步 / 接着做 / resume / continue”等续接意图，或只确认上一轮推荐动作（如“可以”“ok”“go on”），先读取 `references/continuation-routing.md` 执行 continuation preflight，再进入普通阶段路由。
+
+Continuation preflight 必须先确认当前 feature 来源（用户显式指定或 `specs/.active`）、关键 artifact 状态和 roadmap current 是否匹配。若发现 `.active` 缺失、feature 目录不存在、roadmap mismatch 或多个 roadmap 候选，先说明失配并回退到 feature 确认、`specify` 或状态修正；不得静默推进下游阶段。
+
 进入阶段路由前，先判断当前用户需求是否明显适合拆成多个 feature：
 
 - 如果需求包含多个可独立验收的能力、跨阶段路线、"先做 A 后做 B"、完成后还要推荐后续工作，先进入 `ideate` 或 `specify` 前的拆分评估，列出候选 feature、依赖、推荐首项和后续 feature。
@@ -198,6 +202,7 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 跨阶段共享 reference：
 
 - `references/architecture-quality-gate.md`
+- `references/continuation-routing.md`（续接意图、active feature 恢复、状态映射和失配处理）
 - `references/feature-traits.md`（trait 定义、触发规则、跳过条件）
 
 ## 输出要求
@@ -209,13 +214,19 @@ Claude Code 中使用连字符版本（`sdd-explorer`、`sdd-docs-researcher`、
 3. 本阶段将产出或更新什么
 4. 本阶段结束后的下一步建议
 
+如果是 continuation preflight，还必须说明：
+
+5. 使用的 feature 来源：用户显式指定或 `specs/.active`
+6. 检查到的关键 artifact 状态
+7. 推荐阶段和依据
+
 如果发现上游产物不足或 `specs/.active` 失配，还必须补充：
 
-5. 为什么需要回退或切换
-6. 建议回到哪个阶段或更新哪个工作区文件
+8. 为什么需要回退或切换
+9. 建议回到哪个阶段或更新哪个工作区文件
 
 如果当前 feature 属于 roadmap，还必须补充：
 
-7. 当前 roadmap 的 current feature 与 `specs/.active` 是否一致
-8. 当前阶段结束后是否需要更新 roadmap
-9. 若 feature 已 closeout，推荐的下一个 feature 和推荐依据
+10. 当前 roadmap 的 current feature 与 `specs/.active` 是否一致
+11. 当前阶段结束后是否需要更新 roadmap
+12. 若 feature 已 closeout，推荐的下一个 feature 和推荐依据

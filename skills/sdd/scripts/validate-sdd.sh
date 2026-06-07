@@ -24,6 +24,7 @@ require_grep() {
 
 echo "validate-sdd: checking required stage assets..."
 for path in \
+  skills/sdd/references/continuation-routing.md \
   skills/sdd/references/stages/ideate.md \
   skills/sdd/references/stages/specify.md \
   skills/sdd/references/stages/clarify.md \
@@ -44,9 +45,12 @@ require_grep 'references/stages/verify\.md' "skills/sdd/SKILL.md"
 require_grep 'references/stages/closeout\.md' "skills/sdd/SKILL.md"
 require_grep '`code-review` 不再是主链终点' "skills/sdd/SKILL.md"
 require_grep '没有 fresh evidence，不应宣布 feature 已完成' "skills/sdd/SKILL.md"
+require_grep 'references/continuation-routing\.md' "skills/sdd/SKILL.md"
+require_grep 'resume / continue' "skills/sdd/SKILL.md"
 
 echo "validate-sdd: checking stage intent..."
 require_grep '^# Clarify / Domain Alignment Stage$' "skills/sdd/references/stages/clarify.md"
+require_grep 'continuation-routing\.md' "skills/sdd/references/stages/ideate.md"
 require_grep 'checkpoint' "skills/sdd/references/stages/execute-plan.md"
 require_grep '进入 `verify`' "skills/sdd/references/stages/implement.md"
 require_grep '^# Verify Stage$' "skills/sdd/references/stages/verify.md"
@@ -59,5 +63,14 @@ echo "validate-sdd: checking template and workspace references..."
 require_grep 'specs/\.active' "skills/sdd/SKILL.md"
 require_grep 'specs/<feature>/acceptance\.md' "skills/sdd/SKILL.md"
 require_grep '验证路径' "skills/sdd/references/stages/plan.md"
+
+echo "validate-sdd: checking continuation routing..."
+require_grep 'specs/\.active' "skills/sdd/references/continuation-routing.md"
+require_grep 'roadmap mismatch' "skills/sdd/references/continuation-routing.md"
+require_grep 'fresh evidence' "skills/sdd/references/continuation-routing.md"
+require_grep 'acceptance\.md' "skills/sdd/references/continuation-routing.md"
+require_grep 'closeout' "skills/sdd/references/continuation-routing.md"
+require_grep 'resume' "skills/sdd/references/continuation-routing.md"
+require_grep 'continue' "skills/sdd/references/continuation-routing.md"
 
 echo "validate-sdd: OK"

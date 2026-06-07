@@ -29,6 +29,7 @@ source: skills/ideate/SKILL.md
 ## 回退 / 停止条件
 
 - 如果需求已经足够清晰，不继续发散，直接进入 `specify`
+- 如果用户表达“继续 / 下一步 / 接着做 / resume / continue”等续接意图，不进入发散；先读取 `../continuation-routing.md` 执行 continuation preflight
 - 如果用户实际要做的是极小改动或单点修复，应停止完整 SDD 路由并改走普通实现流程
 
 ## 执行原则
@@ -39,6 +40,7 @@ source: skills/ideate/SKILL.md
 - 如果发散后发现需求其实很清晰，直接跳到 `specify`
 - 如果用户明确说“只评估，不写文件”，只输出拆分评估和推荐路线，不创建 `spec.md`、`roadmap.md` 或更新 `specs/.active`
 - 单点小改动、低风险修复或单个清晰 feature 不生成 roadmap
+- “可以”“ok”“go on”等只是在确认上一轮推荐动作时，按 continuation routing 恢复阶段，不当作新需求发散
 
 ## 三阶段
 
