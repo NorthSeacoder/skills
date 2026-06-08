@@ -35,8 +35,9 @@ template: ../../templates/tasks-template.md
 3. 提取 plan 中的关键架构决策、质量属性目标和 architecture drift 风险
 4. 确认当前方案足以落成任务
 5. 读取 `templates/tasks-template.md` 生成 `tasks.md`
-6. 若当前 feature 命中任一 Feature Trait、存在研究材料、或实现/验证上下文容易跨会话丢失，读取 `templates/context-manifest-template.md` 生成或更新 `context-manifest.md`
-7. `context-manifest.md` 至少应包含 Implement Context 和 Check Context；有外部 docs、本地研究或参考仓分析时补 Research Context
+6. 若 spec.md 中 `bugfix-loop-breaker` 命中，参考 `../bugfix-loop-breaker.md` 拆出 reproduce/evidence、failed-attempt ledger、fix、regression guard、diffusion check、verify evidence、acceptance 和 Knowledge Capture 任务，不得只写“改代码并测试”
+7. 若当前 feature 命中任一 Feature Trait、存在研究材料、或实现/验证上下文容易跨会话丢失，读取 `templates/context-manifest-template.md` 生成或更新 `context-manifest.md`
+8. `context-manifest.md` 至少应包含 Implement Context 和 Check Context；有外部 docs、本地研究或参考仓分析时补 Research Context
 
 ## 回退条件
 

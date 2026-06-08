@@ -27,6 +27,7 @@ source: skills/implement/SKILL.md
 - 每个可验证单元完成后再更新任务状态
 - 尽量让每轮实现对应一个最小任务包，而不是扩散成整批隐式改动
 - context manifest 不替代源文件检查；待修改源文件仍由实现阶段按需读取
+- 若 spec 命中 `bugfix-loop-breaker`，失败尝试必须更新 Failed Attempt Ledger；同一失败条件再次出现时，必须先调整 Root Cause Hypothesis 或新增 fresh evidence，不得盲目重复同类修改
 
 ## 回退条件
 
@@ -43,9 +44,10 @@ source: skills/implement/SKILL.md
 3. 校验 manifest 条目：每条必须有 reason；Required 本地文件必须存在
 4. 读取最小必要上下文和按需检查源文件
 5. 按可验证单元渐进实现
-6. 更新 `tasks.md` 状态
-7. 做局部验证
-8. 记录进入 `Verify` 所需的证据线索，包括 manifest 是否被读取
+6. 若本轮是 bugfix 且局部验证失败，记录 Attempt、Change / Action、Result、Excluded Hypothesis 和 Next Evidence；必要时回退 `clarify` / `plan`
+7. 更新 `tasks.md` 状态
+8. 做局部验证
+9. 记录进入 `Verify` 所需的证据线索，包括 manifest 是否被读取
 
 ## 下一步
 

@@ -20,6 +20,7 @@
 | `artifact-handoff` | ✅ / ❌ | [信号或为什么不命中] |
 | `user-visible-output` | ✅ / ❌ | [信号或为什么不命中] |
 | `prior-closure-failure` | ✅ / ❌ | [信号或为什么不命中] |
+| `bugfix-loop-breaker` | ✅ / ❌ | [复杂 bugfix / regression / root cause 未明 / 重复失败 / 扩散风险；轻量 bugfix 可写跳过原因] |
 
 **结论**: [若任一 trait 命中，列出本 feature 适用的强化规则；若全 ❌，说明本 feature 按基础流程推进]
 

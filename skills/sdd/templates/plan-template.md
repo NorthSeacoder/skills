@@ -55,6 +55,24 @@
 
 ---
 
+## Bugfix Strategy *(if `bugfix-loop-breaker`)*
+
+> 当 spec.md 中 `bugfix-loop-breaker` 命中时填写。详见 [`../references/bugfix-loop-breaker.md`](../references/bugfix-loop-breaker.md)。
+
+| Field | Value |
+|---|---|
+| Observed Behavior | [实际错误或退化] |
+| Expected Behavior | [期望行为] |
+| Reproduction Status | reproducible / intermittent / not-reproduced / unknown |
+| Root Cause Hypothesis | [已验证假设，未知时写 unknown] |
+| Fix Boundary | [本次修复范围和明确不改范围] |
+| Failed Attempt Handling | [如何记录失败尝试、排除假设和下一步证据] |
+| Regression Guard Strategy | [测试、fixture、validator 或人工验证] |
+| Diffusion Check Strategy | [相邻路径、共享规则、模板、状态机或调用点检查] |
+| Verification Path | [before/after proof 或替代证据] |
+
+---
+
 ## Capacity / Scale Notes *(if applicable)*
 
 - **规模假设**: [用户量 / 请求量 / 数据量 / 并发量]

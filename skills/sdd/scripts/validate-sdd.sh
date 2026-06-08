@@ -111,6 +111,12 @@ is_local_context_source() {
   return 0
 }
 
+active_spec_has_bugfix_loop_breaker() {
+  local spec="$ACTIVE_DIR/spec.md"
+  [[ -f "$spec" ]] || return 1
+  grep -Eq '^\| `bugfix-loop-breaker` \| ✅ \|' "$spec"
+}
+
 parse_active_feature() {
   require_file "specs/.active"
   ACTIVE_FEATURE="$(tr -d '\r' < "specs/.active" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | head -n 1)"
@@ -208,11 +214,20 @@ check_closeout_ready() {
   require_grep 'recorded-only|synced-by-session-memory|skipped|redacted|follow-up' "$acceptance"
   require_grep '^## Completion Record' "$acceptance"
   require_grep 'Overall' "$acceptance"
+
+  if active_spec_has_bugfix_loop_breaker; then
+    require_grep 'Root Cause|Root Cause / Hypothesis|Root Cause Hypothesis' "$evidence"
+    require_grep 'Regression Guard' "$evidence"
+    require_grep 'Diffusion Check' "$evidence"
+    require_grep '^## Bugfix Closure' "$acceptance"
+    require_grep 'Prevention Mechanism' "$acceptance"
+  fi
 }
 
 echo "validate-sdd: checking required stage assets..."
 for path in \
   skills/sdd/references/continuation-routing.md \
+  skills/sdd/references/bugfix-loop-breaker.md \
   skills/sdd/references/status-model.md \
   skills/sdd/references/stages/ideate.md \
   skills/sdd/references/stages/specify.md \
@@ -240,14 +255,18 @@ require_grep 'resume / continue' "skills/sdd/SKILL.md"
 
 echo "validate-sdd: checking stage intent..."
 require_grep '^# Clarify / Domain Alignment Stage$' "skills/sdd/references/stages/clarify.md"
+require_grep 'bugfix-loop-breaker' "skills/sdd/references/stages/clarify.md"
 require_grep 'continuation-routing\.md' "skills/sdd/references/stages/ideate.md"
 require_grep 'checkpoint' "skills/sdd/references/stages/execute-plan.md"
 require_grep '进入 `verify`' "skills/sdd/references/stages/implement.md"
+require_grep 'Failed Attempt Ledger' "skills/sdd/references/stages/implement.md"
 require_grep '^# Verify Stage$' "skills/sdd/references/stages/verify.md"
 require_grep 'validate-sdd\.sh' "skills/sdd/references/stages/verify.md"
+require_grep 'Regression Guard' "skills/sdd/references/stages/verify.md"
 require_grep '^# Closeout Stage$' "skills/sdd/references/stages/closeout.md"
 require_grep 'Closeout Checklist' "skills/sdd/references/stages/closeout.md"
 require_grep 'Knowledge Capture Gate' "skills/sdd/references/stages/closeout.md"
+require_grep 'Bugfix Closure' "skills/sdd/references/stages/closeout.md"
 require_grep '--closeout-ready' "skills/sdd/references/stages/closeout.md"
 require_grep '^# Code Review Check$' "skills/sdd/references/stages/code-review.md"
 require_grep '作为 `Verify` 阶段内的一个检查动作' "skills/sdd/references/stages/code-review.md"
@@ -256,6 +275,9 @@ echo "validate-sdd: checking template and workspace references..."
 require_grep 'specs/\.active' "skills/sdd/SKILL.md"
 require_grep 'specs/<feature>/acceptance\.md' "skills/sdd/SKILL.md"
 require_grep '验证路径' "skills/sdd/references/stages/plan.md"
+require_grep 'Bugfix Strategy' "skills/sdd/templates/plan-template.md"
+require_grep 'Bugfix Loop Breaker Tasks' "skills/sdd/templates/tasks-template.md"
+require_grep 'Bugfix Closure' "skills/sdd/templates/acceptance-template.md"
 
 echo "validate-sdd: checking continuation routing..."
 require_grep 'specs/\.active' "skills/sdd/references/continuation-routing.md"
@@ -271,6 +293,7 @@ echo "validate-sdd: checking status model..."
 require_grep 'Validation Modes' "skills/sdd/references/status-model.md"
 require_grep 'closeout-ready' "skills/sdd/references/status-model.md"
 require_grep 'Knowledge Capture' "skills/sdd/references/status-model.md"
+require_grep 'bugfix-loop-breaker' "skills/sdd/references/status-model.md"
 require_grep 'multiple roadmap candidates' "skills/sdd/references/status-model.md"
 require_grep 'Current Feature: none' "skills/sdd/references/status-model.md"
 require_grep 'context-manifest\.md' "skills/sdd/references/status-model.md"

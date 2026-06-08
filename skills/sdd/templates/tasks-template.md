@@ -42,6 +42,27 @@
 
 ---
 
+## Bugfix Loop Breaker Tasks *(if `bugfix-loop-breaker`)*
+
+> 当 spec.md 中 `bugfix-loop-breaker` 命中时，任务必须覆盖以下类别；轻量 bugfix 跳过时写明原因。
+
+- [ ] T00X [Bugfix] 记录复现或替代证据
+  - scope: [测试 / fixture / 日志 / 人工步骤]
+  - maps_to: Bugfix Context / FR-007
+  - verify: [before-fails 或无法复现原因]
+
+- [ ] T00X [Bugfix] 维护 Failed Attempt Ledger
+  - scope: [tasks.md / verify-evidence.md]
+  - maps_to: Failed Attempt Ledger / FR-006
+  - verify: [失败尝试、排除假设和下一步证据已记录]
+
+- [ ] T00X [Bugfix] 增加 Regression Guard 和 Diffusion Check
+  - scope: [测试 / validator / 相邻路径扫描]
+  - maps_to: FR-008
+  - verify: [guard 通过，扩散检查有结论或跳过原因]
+
+---
+
 ## 依赖与顺序
 
 - 哪些任务必须先完成

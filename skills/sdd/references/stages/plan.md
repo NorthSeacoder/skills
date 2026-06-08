@@ -57,7 +57,8 @@ data_model_template: ../../templates/data-model-template.md
 7. 明确执行治理与验证路径
 8. 读取 `templates/plan-template.md` 生成 `plan.md`
 9. 若 spec.md 中 `multi-stage-workflow` 或 `artifact-handoff` 命中（参考 `../feature-traits.md`），在 plan.md 写入 `Producer-Consumer Matrix`，列出每个跨阶段 artifact 的 Producer / Artifact / Consumer / Consumption Proof
-10. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
+10. 若 spec.md 中 `bugfix-loop-breaker` 命中，参考 `../bugfix-loop-breaker.md` 写入 bugfix strategy：Root Cause Hypothesis、Fix Boundary、Regression Guard Strategy、Diffusion Check Strategy、Failed Attempt Handling 和 Verification Path；未知 root cause 必须标为 `unknown`，并说明证据获取路径
+11. 涉及实体或状态变化时，读取 `templates/data-model-template.md` 生成 `data-model.md`
 
 ## 回退条件
 

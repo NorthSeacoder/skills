@@ -11,6 +11,7 @@ Feature Traits 是一组布尔标签，用于在 specify 阶段标注 feature �
 | `artifact-handoff` | 一个阶段的产物被另一个阶段消费 | 存在明确的"A 生成 X，B 使用 X"关系；中间产物有格式约定或存储位置 |
 | `user-visible-output` | 最终结果是用户可见内容 | 产出 UI 变化、文档、通知、报告、文件下载等用户直接感知的内容 |
 | `prior-closure-failure` | 该 feature 或同类 feature 有过闭环断裂历史 | 上游 PRD 或讨论中引用了过去"模块有但端到端没通"的事故；存在已知的 regression 风险 |
+| `bugfix-loop-breaker` | 复杂 bugfix 需要打断重复失败或只修症状的循环 | regression、重复失败、root cause 未明、修复后仍失败、同类问题扩散风险，或用户明确要求 root cause / failed attempts / break loop |
 
 ## 触发规则
 
@@ -19,6 +20,7 @@ Feature Traits 是一组布尔标签，用于在 specify 阶段标注 feature �
 | `multi-stage-workflow` OR `artifact-handoff` | Producer-Consumer Matrix | plan |
 | `user-visible-output` OR `external-side-effects` | Evidence Gate | verify |
 | `multi-stage-workflow` AND `user-visible-output` | Workflow Replay | closeout |
+| `bugfix-loop-breaker` | Bugfix Context、Failed Attempt Ledger、Before/After Evidence、Regression Guard、Diffusion Check、Prevention Mechanism | clarify / plan / tasks / implement / verify / closeout |
 | 任一 trait 命中 | 三维 Verdict（Component / Workflow / User-Visible Outcome） | closeout / acceptance |
 | 任一 trait 命中 | 默认生成或更新 `acceptance.md`，作为持久 completion record | closeout |
 

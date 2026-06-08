@@ -44,6 +44,7 @@ source: sdd custom stage
 - 执行 Knowledge Capture Gate：识别 durable knowledge、证据来源、适用范围、redaction 需求、sync status 和后续动作
 - 检查当前 feature 是否属于 `specs/<umbrella>/roadmap.md`；若属于，检查 roadmap 的 `Current Feature` 与 `specs/.active` 是否一致
 - 若 spec.md 中同时命中 `multi-stage-workflow` 和 `user-visible-output`（参考 `../feature-traits.md`），执行 workflow replay 并把输入摘要、最终 payload 摘要、用户可见结果断言写入 acceptance.md
+- 若 spec.md 中命中 `bugfix-loop-breaker`，参考 `../bugfix-loop-breaker.md` 写入 Root Cause / Hypothesis、Fix Mechanism、Prevention Mechanism、Failed Attempts Summary、Regression Guard、Diffusion Check、Remaining Risk 和 Knowledge Capture；缺证据时不得把假设写成已确认事实
 
 每个 checklist 项必须标注状态：`已完成` / `延后` / `不适用` / `阻塞`。每项都必须给出一句证据或依据；出现 `阻塞` 时不得宣布 feature 完成。
 
@@ -78,6 +79,7 @@ Sync Status 只能描述状态，不触发动作：
 
 - 若 spec.md 中任一 Feature Trait 命中，且用户未显式选择轻量路径，必须使用 `../../templates/acceptance-template.md` 写入或更新 `specs/<feature>/acceptance.md`
 - `acceptance.md` 必须包含 verify 产出的 Evidence Table、三维 Verdict、必要的 Workflow Replay、Closeout Checklist 和 Completion Record
+- 若 spec.md 中命中 `bugfix-loop-breaker`，`acceptance.md` 还必须包含 `## Bugfix Closure` 段，记录 root cause、fix mechanism、prevention、failed attempts、guard、diffusion 和 remaining risk；轻量路径必须写跳过原因
 - 若所有 trait 均为 ❌，或用户显式选择轻量路径，可跳过完整 `acceptance.md`，但必须用中文记录跳过原因
 - closeout 对话输出不得替代 `acceptance.md`；只摘要验收文件路径、Overall verdict、阻塞项、延后项和下一步
 

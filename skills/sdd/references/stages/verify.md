@@ -44,6 +44,7 @@ source: sdd custom stage
 - **Architecture drift 检查**：是否偏离 plan 中模块边界、数据流、ADR 或质量属性；不适用时说明原因
 - **Unresolved risks**：剩余风险、证据缺口和是否影响进入 closeout
 - **Verdict**：`PASS` / `CONDITIONAL PASS` / `FAIL`
+- **Bugfix proof**：若 spec 命中 `bugfix-loop-breaker`，记录 Root Cause / Hypothesis、Before Evidence、After Evidence 或 Substitute Evidence、Regression Guard、Diffusion Check 和 Remaining Risk
 
 Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘要、fixture 或人工验证记录。不得只写“已实现”“测试通过”“review 通过”。
 
@@ -55,10 +56,11 @@ Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘
 4. 检查是否存在 architecture drift：模块边界、数据流、状态、依赖、缓存、队列、外部调用或失败模式是否偏离 plan
 5. 检查测试、runtime 或 browser 级证据
 6. 若 spec.md 中 `user-visible-output` 或 `external-side-effects` 命中（参考 `../feature-traits.md`），生成 Evidence Table draft 覆盖每条 P0/P1 requirement，evidence 不足的行判 PARTIAL（此时总 verdict 不得为 PASS）
-7. 运行或检查 `bash skills/sdd/scripts/validate-sdd.sh` 的 default mode；若要证明 closeout readiness，可额外运行 `bash skills/sdd/scripts/validate-sdd.sh --closeout-ready`
-8. 判断证据是否足以支持完成判定
-9. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
-10. 若通过，进入 `closeout`
+7. 若 spec.md 中 `bugfix-loop-breaker` 命中，参考 `../bugfix-loop-breaker.md` 检查 before/after proof、Regression Guard、Diffusion Check、Failed Attempt Ledger 和替代证据；缺关键证据时总 verdict 不得为 PASS
+8. 运行或检查 `bash skills/sdd/scripts/validate-sdd.sh` 的 default mode；若要证明 closeout readiness，可额外运行 `bash skills/sdd/scripts/validate-sdd.sh --closeout-ready`
+9. 判断证据是否足以支持完成判定
+10. 输出 `PASS` / `CONDITIONAL PASS` / `FAIL`
+11. 若通过，进入 `closeout`
 
 ## 回退条件
 
@@ -89,5 +91,6 @@ Evidence 必须能定位到测试名、文件路径、日志位置、payload 摘
 - 若存在 `context-manifest.md`，已说明 Check Context 覆盖状态；若跳过，已说明原因
 - 已说明架构漂移检查状态；若不适用，也说明原因
 - 若触发 evidence gate 的 trait 命中，Evidence Table 已存在且每条 P0/P1 requirement 都有判定
+- 若 `bugfix-loop-breaker` 命中，已说明 root cause/hypothesis、before/after 或 substitute evidence、Regression Guard、Diffusion Check 和 Remaining Risk
 - 已输出可支撑下一步的 Verdict
 - 若通过，已能解释为什么可以进入 `closeout`

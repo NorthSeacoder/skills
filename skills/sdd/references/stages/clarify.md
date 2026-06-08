@@ -31,6 +31,7 @@ source: skills/clarify/SKILL.md
 - 不把 `clarify` 退化成”格式化 spec 的补完器”
 - 不把小改动强行扩成完整架构咨询；跳过架构质量门时简短说明原因
 - 用户对某个发现说”不重要”或”先不管”时，记录为 known risk 并继续，不反复追问
+- 若 spec 命中 `bugfix-loop-breaker`，参考 `../bugfix-loop-breaker.md` 检查 Bugfix Context；root cause、复现状态或失败尝试未知时必须显式写 `unknown` 和下一步调查路径，不得编造 root cause
 
 ## 执行步骤
 
@@ -38,10 +39,11 @@ source: skills/clarify/SKILL.md
 2. 主动分析：识别隐藏问题、盲点、依赖冲突、边界模糊、历史决策矛盾
 3. 对能从代码或文档直接推断的项，形成推断结论备用
 4. 如触发架构质量门，分析业务范围、规模、读写特征、一致性、增长路径、失败代价、硬约束和质量属性中的隐藏风险
-5. 向用户呈现关键发现，每个发现包含：发现什么 + 推断或担忧 + 请用户确认或修正
-6. 若分析后未发现隐藏问题，直接说明并建议进入 `plan`
-7. 用户确认或补充后回写 `spec.md`
-8. 判断是否可以进入 `plan`
+5. 若 spec 命中 `bugfix-loop-breaker`，检查 Observed Behavior、Expected Behavior、Impact Scope、Reproduction Status、Known Failed Attempts、Root Cause Hypothesis 和 Evidence Plan；缺失项只标记为 `unknown`，并形成待调查问题
+6. 向用户呈现关键发现，每个发现包含：发现什么 + 推断或担忧 + 请用户确认或修正
+7. 若分析后未发现隐藏问题，直接说明并建议进入 `plan`
+8. 用户确认或补充后回写 `spec.md`
+9. 判断是否可以进入 `plan`
 
 ## 回退条件
 

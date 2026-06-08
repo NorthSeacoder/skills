@@ -58,6 +58,22 @@
 
 ---
 
+## Bugfix Closure *(if `bugfix-loop-breaker`)*
+
+> 当 spec.md 中 `bugfix-loop-breaker` 命中时必填。轻量 bugfix 跳过完整闭环时，写 `> 跳过 bugfix-loop-breaker：[原因]`。
+
+| Field | Value |
+|---|---|
+| Root Cause / Hypothesis | [已验证 root cause；未知或未完全证实时写 hypothesis] |
+| Fix Mechanism | [修复如何改变行为] |
+| Prevention Mechanism | [防复发机制：测试、validator、约定、文档或 follow-up] |
+| Failed Attempts Summary | [失败尝试、排除假设或无失败尝试的说明] |
+| Regression Guard | [测试、fixture、validator 或人工检查] |
+| Diffusion Check | [同类路径 / 共享规则 / 模板 / 状态机检查结果或跳过原因] |
+| Remaining Risk | [无 / 剩余风险和恢复条件] |
+
+---
+
 ## Closeout Checklist
 
 > 每一项必须写状态和依据。可用状态：已完成 / 延后 / 不适用 / 阻塞。
